@@ -1,6 +1,6 @@
 ## OpenAI Spring Demo
 
-This repository demonstrates how to call several [OpenAI services](https://platform.openai.com/docs/api-reference) from Spring without using the Spring AI project. Note that OpenAI requires an API key, which you must set as an environment variable, and you have to give them a credit card number to use the service. Fortunately, the cost for all the services used (other than potentially GPT-4) is minimal.
+This repository demonstrates how to call several [OpenAI services](https://platform.openai.com/docs/api-reference) from Spring without using the Spring AI project. Note that OpenAI requires an API key, which you must set as an environment variable, and you have to give them a credit card number to use the service. Fortunately, the cost for all the services (other than potentially GPT-4) is minimal.
 
 ## Prerequisites
 
