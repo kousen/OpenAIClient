@@ -1,3 +1,5 @@
 package com.kousenit.openaiclient.json;
 
-public record Message(String role, String content) {}
+import com.kousenit.openaiclient.util.Role;
+
+public record Message(Role role, String content) {}
