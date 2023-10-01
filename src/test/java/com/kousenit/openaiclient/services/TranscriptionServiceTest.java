@@ -36,8 +36,9 @@ public class TranscriptionServiceTest {
             ResponseEntity<String> response =
                     service.transcribeAudio(wavFile.getAbsolutePath(), "AssertJ");
             assert response != null;
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-            System.out.println(Objects.requireNonNull(response.getBody()));
+            assertThat(response.getStatusCode())
+                    .isEqualTo(HttpStatus.OK);
+            System.out.println(response.getBody());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

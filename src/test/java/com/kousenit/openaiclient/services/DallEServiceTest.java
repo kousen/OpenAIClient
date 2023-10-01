@@ -13,7 +13,7 @@ class DallEServiceTest {
     void downloadImagesFromPromptAndNumber() {
         String prompt = """
                 A photorealistic image of a happy robot
-                jumping up and down on springs attached to both feet
+                jumping up and down on springs
                 """;
         dallEService.downloadImagesFromPromptAndNumber(prompt, 4);
     }
