@@ -1,9 +1,6 @@
 package com.kousenit.openaiclient.services;
 
-import com.kousenit.openaiclient.json.ChatRequest;
-import com.kousenit.openaiclient.json.ChatResponse;
-import com.kousenit.openaiclient.json.Message;
-import com.kousenit.openaiclient.json.ModelList;
+import com.kousenit.openaiclient.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +38,13 @@ public class OpenAIService {
         ChatResponse response = openAIInterface.getChatResponse(chatRequest);
         logger.info("Usage: {}", response.usage());
         return response.choices().get(0).message().content();
+    }
+
+    public ChatRequest createChatRequestFromDefaults(String prompt) {
+        return openAIInterface.createChatRequest(prompt);
+    }
+
+    public ImageRequest createImageRequestFromDefaults(String prompt, int n, String size) {
+        return openAIInterface.createImageRequest(prompt, n, size);
     }
 }

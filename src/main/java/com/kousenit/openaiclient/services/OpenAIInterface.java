@@ -27,6 +27,10 @@ public interface OpenAIInterface {
                 0.7);
     }
 
+    default ImageRequest createImageRequest(String prompt, int n, String size) {
+        return new ImageRequest(prompt, n, size, "b64_json");
+    }
+
 //    @PostExchange(value = "/audio/transcriptions", accept = "application/json", contentType = "multipart/form-data")
 //    ResponseEntity<TranscriptionResponse> transcribe(
 //            @RequestPart("file") MultipartFile audioFile,

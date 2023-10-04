@@ -44,7 +44,7 @@ class OpenAIInterfaceTest {
 
     @Test
     void accessDallE() {
-        ImageRequest imageRequest = createImageRequest(
+        ImageRequest imageRequest = openAIInterface.createImageRequest(
                 """
                         Portrait photography during the golden hour,
                         using the soft, warm light to highlight the subject.
@@ -53,9 +53,5 @@ class OpenAIInterfaceTest {
         ImageResponse response = openAIInterface.getImageResponse(imageRequest);
         assertThat(response.data().size()).isEqualTo(1);
         FileUtils.writeImageToFile(response.data().get(0).b64_json());
-    }
-
-    public ImageRequest createImageRequest(String prompt, int n, String size) {
-        return new ImageRequest(prompt, n, size, "b64_json");
     }
 }
