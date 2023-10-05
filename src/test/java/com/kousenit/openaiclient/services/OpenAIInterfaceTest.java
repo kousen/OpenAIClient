@@ -41,6 +41,15 @@ class OpenAIInterfaceTest {
                 .isEqualTo("This is a test!");
     }
 
+    @Test
+    void extractStringResponse() {
+        ChatRequest chatRequest =
+                openAIInterface.createChatRequest("Say this is a test!");
+        ChatResponse response = openAIInterface.getChatResponse(chatRequest);
+        logger.info(response.usage().toString());
+        assertThat(openAIInterface.extractStringResponse(response))
+                .isEqualTo("This is a test!");
+    }
 
     @Test
     void accessDallE() {
@@ -54,4 +63,5 @@ class OpenAIInterfaceTest {
         assertThat(response.data().size()).isEqualTo(1);
         FileUtils.writeImageToFile(response.data().get(0).b64_json());
     }
+
 }

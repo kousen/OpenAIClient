@@ -31,6 +31,10 @@ public interface OpenAIInterface {
         return new ImageRequest(prompt, n, size, "b64_json");
     }
 
+    default String extractStringResponse(ChatResponse response) {
+        return response.choices().get(0).message().content();
+    }
+
 //    @PostExchange(value = "/audio/transcriptions", accept = "application/json", contentType = "multipart/form-data")
 //    ResponseEntity<TranscriptionResponse> transcribe(
 //            @RequestPart("file") MultipartFile audioFile,
