@@ -30,7 +30,7 @@ class OpenAIServiceTest {
 
     @Test
     void getChatResponse() {
-        String response = openAIService.getChatResponse("gpt-4",
+        String response = openAIService.getChatResponse(OpenAIService.GPT4,
                 List.of(new Message(Role.USER,
                         """
                         According to Douglas Adams, what is the Ultimate Answer
@@ -49,7 +49,7 @@ class OpenAIServiceTest {
 
         ChatRequest chatRequest = openAIService.createChatRequestFromDefaults(prompt);
         assertAll(
-                () -> assertThat(chatRequest.model()).isEqualTo("gpt-3.5-turbo"),
+                () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT35),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).isNotNull(),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
