@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
-    public static final String GPT4 = "gpt-3.4";
+    public static final String GPT4 = "gpt-4";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
@@ -40,7 +40,7 @@ public class OpenAIService {
         ChatRequest chatRequest = new ChatRequest(model, messages, temperature);
         ChatResponse response = openAIInterface.getChatResponse(chatRequest);
         logger.info("Usage: {}", response.usage());
-        return response.choices().get(0).message().content();
+        return openAIInterface.extractStringResponse(response);
     }
 
     public ChatRequest createChatRequestFromDefaults(String prompt) {

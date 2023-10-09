@@ -33,14 +33,13 @@ class OpenAIServiceTest {
         String response = openAIService.getChatResponse(OpenAIService.GPT4,
                 List.of(new Message(Role.USER,
                         """
-                        According to Douglas Adams, what is the Ultimate Answer
-                        to the Ultimate Question of Life, the Universe, and Everything?""")),
+                                According to Douglas Adams, what is the Ultimate Answer
+                                to the Ultimate Question of Life, the Universe, and Everything?""")),
                 0.2);
         System.out.println(response);
         assertTrue(response.contains("42"));
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Test
     void createChatRequestFromDefaults() {
         String prompt = """
@@ -48,10 +47,10 @@ class OpenAIServiceTest {
                 to the Ultimate Question of Life, the Universe, and Everything?""";
 
         ChatRequest chatRequest = openAIService.createChatRequestFromDefaults(prompt);
+        assertThat(chatRequest.messages()).isNotNull();
         assertAll(
                 () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT35),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
-                () -> assertThat(chatRequest.messages()).isNotNull(),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
                 () -> assertThat(chatRequest.messages().get(0).role()).isEqualTo(Role.USER),
                 () -> assertThat(chatRequest.messages().get(0).content()).isEqualTo(prompt));
