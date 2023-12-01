@@ -56,7 +56,7 @@ public class AppConfig {
 
     @Bean
     public RestClient claudeRestClient(@Value("${claude.baseurl}") String baseUrl,
-                                       @Value("${claude.apikey}") String apiKey) {
+                                       @Value("${ANTHROPIC_API_KEY}") String apiKey) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader("x-api-key", apiKey)
