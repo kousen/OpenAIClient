@@ -29,11 +29,12 @@ class ClaudeServiceTest {
 
     @Test
     void extractPerson() {
+        int yearsFromNow = 2305 - LocalDate.now().getYear();
         var person = claudeService.extractPerson("""
                 Captain Picard was born on the 13th of juillet, %d years from now,
                 in La Barre, France, Earth. His given name, Jean-Luc, is of French
                 origin and translates to "John Luke".
-                """.formatted(2305 - LocalDate.now().getYear()));
+                """.formatted(yearsFromNow));
         System.out.println(person);
         assertAll(
                 () -> assertThat(person.firstName()).isEqualTo("Jean-Luc"),
