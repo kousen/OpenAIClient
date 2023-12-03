@@ -13,8 +13,11 @@ import java.util.regex.Pattern;
 @Service
 public class ClaudeService {
     public static final Logger logger = LoggerFactory.getLogger(ClaudeService.class);
+    public static final Double DEFAULT_TEMPERATURE = 0.7;
 
     public final static String CLAUDE_2 = "claude-2";
+    public final static String CLAUDE_INSTANT_1 = "claude-instant-1";
+
 
     private final ClaudeInterface claudeInterface;
     private final ObjectMapper mapper;
@@ -24,15 +27,39 @@ public class ClaudeService {
         this.mapper = mapper;
     }
 
+    // Overloads for prompt, model, and temperature
     public String getClaudeResponse(String prompt) {
-        ClaudeRequest request = new ClaudeRequest(CLAUDE_2,
-                formatPrompt(prompt),
-                256, 0.7);
+        return getClaudeResponse(prompt, CLAUDE_INSTANT_1, DEFAULT_TEMPERATURE);
+    }
+
+    public String getClaudeResponse(String prompt, String model) {
+        return getClaudeResponse(prompt, model, DEFAULT_TEMPERATURE);
+    }
+
+    public String getClaudeResponse(String prompt, double temperature) {
+        return getClaudeResponse(prompt, CLAUDE_INSTANT_1, temperature);
+    }
+
+    public String getClaudeResponse(String prompt, String model, double temperature) {
+        return getClaudeResponse("", prompt, model, temperature);
+    }
+
+    public String getClaudeResponse(String system, String prompt, String model, double temperature) {
+        ClaudeRequest request = new ClaudeRequest(
+                model,
+                formatWithSystemPrompt(system, prompt),
+                256,
+                temperature);
         return claudeInterface.getCompletion(request).completion();
     }
 
-    private String formatPrompt(String prompt) {
-        return "\n\nHuman: %s\n\nAssistant:".formatted(prompt);
+    // System prompts provide context and are provided before the first Human: prompt
+    private String formatWithSystemPrompt(String system, String prompt) {
+        if (system.isEmpty()) {
+            return "\n\nHuman: %s\n\nAssistant:".formatted(prompt);
+        }
+
+        return "%s\n\nHuman: %s\n\nAssistant:".formatted(system, prompt);
     }
 
     public Person extractPerson(String prompt) {
