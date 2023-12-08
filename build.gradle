@@ -20,7 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
-    implementation("io.netty:netty-resolver-dns-native-macos:4.1.99.Final") {
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.101.Final") {
         artifact {
             classifier = "osx-aarch_64"
         }

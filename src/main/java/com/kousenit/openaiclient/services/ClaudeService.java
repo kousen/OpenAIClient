@@ -63,18 +63,29 @@ public class ClaudeService {
     }
 
     public Person extractPerson(String prompt) {
-        String text = """
+        return extractPerson(prompt, CLAUDE_INSTANT_1, DEFAULT_TEMPERATURE);
+    }
+
+    public Person extractPerson(String prompt, String model) {
+        return extractPerson(prompt, model, DEFAULT_TEMPERATURE);
+    }
+
+    public Person extractPerson(String prompt, double temperature) {
+        return extractPerson(prompt, CLAUDE_INSTANT_1, temperature);
+    }
+
+    public Person extractPerson(String prompt, String model, double temperature) {
+        String systemPrompt = """
                 Here is a Java record representing a person:
-                record Person(String firstName, String lastName, LocalDate dob) {}
-                                                
-                Here is a passage of text that includes information about a person:
+                    record Person(String firstName, String lastName, LocalDate dob) {}
+                Please extract the relevant fields from the <person> tags in the next
+                message into a JSON representation of a Person object.
+                """;
+        String text = """
                 <person>%s</person>
-                                                
-                Please extract the relevant fields into the JSON representation
-                of a Person object.
                 """.formatted(prompt);
         try {
-            String output = getClaudeResponse(text);
+            String output = getClaudeResponse(systemPrompt, text, model, temperature);
             logger.info(output);
             return mapper.readValue(parseJSONFromResponse(output), Person.class);
         } catch (JsonProcessingException e) {
@@ -85,7 +96,7 @@ public class ClaudeService {
     private String parseJSONFromResponse(String response) {
         Pattern pattern = Pattern.compile("```json\n(.*)\n```", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(response);
-        String json = "";
+        String json = response;
         if(matcher.find()){
             json = matcher.group(1);
         }
