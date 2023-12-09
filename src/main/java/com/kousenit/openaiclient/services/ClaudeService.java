@@ -3,6 +3,7 @@ package com.kousenit.openaiclient.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kousenit.openaiclient.json.ClaudeRequest;
+import com.kousenit.openaiclient.json.ClaudeResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ import java.util.regex.Pattern;
 @Service
 public class ClaudeService {
     public static final Logger logger = LoggerFactory.getLogger(ClaudeService.class);
-    public static final Double DEFAULT_TEMPERATURE = 0.7;
+    public static final Double DEFAULT_TEMPERATURE = 0.3;
+    public static final Integer MAX_TOKENS_TO_SAMPLE = 1024;
 
     public final static String CLAUDE_2 = "claude-2";
     public final static String CLAUDE_INSTANT_1 = "claude-instant-1";
@@ -48,9 +50,11 @@ public class ClaudeService {
         ClaudeRequest request = new ClaudeRequest(
                 model,
                 formatWithSystemPrompt(system, prompt),
-                256,
+                MAX_TOKENS_TO_SAMPLE,
                 temperature);
-        return claudeInterface.getCompletion(request).completion();
+        ClaudeResponse response = claudeInterface.getCompletion(request);
+        logger.info(response.toString());
+        return response.completion();
     }
 
     // System prompts provide context and are provided before the first Human: prompt
@@ -86,7 +90,7 @@ public class ClaudeService {
                 """.formatted(prompt);
         try {
             String output = getClaudeResponse(systemPrompt, text, model, temperature);
-            logger.info(output);
+            logger.debug(output);
             return mapper.readValue(parseJSONFromResponse(output), Person.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -94,13 +98,13 @@ public class ClaudeService {
     }
 
     private String parseJSONFromResponse(String response) {
+        String json = response;
         Pattern pattern = Pattern.compile("```json\n(.*)\n```", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(response);
-        String json = response;
         if(matcher.find()){
             json = matcher.group(1);
         }
-        logger.info("Extracted: " + json);
+        logger.debug("Extracted: " + json);
         return json;
     }
 }

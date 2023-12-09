@@ -56,7 +56,7 @@ class ClaudeServiceTest {
                         According to Douglas Adams, what is the Ultimate Answer
                         to the Ultimate Question of Life, the Universe, and Everything?
                         """,
-                0.2
+                0.7
         );
         System.out.println(response);
         assertThat(response).contains("42");

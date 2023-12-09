@@ -56,18 +56,18 @@ public class AppConfig {
 
     @Bean
     public RestClient claudeRestClient(@Value("${claude.baseurl}") String baseUrl,
-                                       @Value("${ANTHROPIC_API_KEY}") String apiKey) {
+                                       @Value("${anthropic.api.key}") String apiKey) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
-                .defaultHeader("x-api-key", apiKey)
-                .defaultHeader("Content-Type", "application/json")
                 .defaultHeader("Accept", "application/json")
+                .defaultHeader("Content-Type", "application/json")
                 .defaultHeader("anthropic-version", "2023-06-01")
+                .defaultHeader("x-api-key", apiKey)
                 .build();
     }
 
     @Bean
-    public ClaudeInterface claudeInterface(@Qualifier("claudeRestClient") RestClient client) {
+    public ClaudeInterface claudeInterface(RestClient client) {
         RestClientAdapter adapter = RestClientAdapter.create(client);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(ClaudeInterface.class);
