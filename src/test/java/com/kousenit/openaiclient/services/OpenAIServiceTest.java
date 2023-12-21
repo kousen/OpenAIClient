@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OpenAIServiceTest {
@@ -38,6 +37,18 @@ class OpenAIServiceTest {
                 0.2);
         System.out.println(response);
         assertTrue(response.contains("42"));
+    }
+
+    @Test
+    void howManyRoads() {
+        String response = openAIService.getChatResponse(OpenAIService.GPT4,
+                List.of(new Message(Role.USER,
+                        """
+                                How many roads must a man walk down
+                                before we call him a man?""")),
+                0.2);
+        System.out.println(response);
+        assertNotNull(response);
     }
 
     @Test
