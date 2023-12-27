@@ -18,7 +18,7 @@ import java.util.Objects;
 @Service
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
-    public static final String GPT4 = "gpt-4";
+    public static final String GPT4 = "gpt-4-1106-preview";
 
     public final static String TTS_1 = "tts-1";
     public final static String TTS_1_HD = "tts-1-hd";
@@ -68,9 +68,20 @@ public class OpenAIService {
     }
 
     public void getAudioResponse(String prompt) {
-        TTSRequest ttsRequest = new TTSRequest(TTS_1_HD, prompt, Voice.ALLOY);
+        TTSRequest ttsRequest = new TTSRequest(TTS_1, prompt, Voice.ALLOY);
         getAudioResponse(ttsRequest);
     }
+
+    public void getAudioResponse(String prompt, Voice voice) {
+        TTSRequest ttsRequest = new TTSRequest(TTS_1, prompt, voice);
+        getAudioResponse(ttsRequest);
+    }
+
+    public void getAudioResponse(String model, String prompt, Voice voice) {
+        TTSRequest ttsRequest = new TTSRequest(model, prompt, voice);
+        getAudioResponse(ttsRequest);
+    }
+
 
     public void playMp3UsingJLayer(String fileName) {
         BufferedInputStream buffer = new BufferedInputStream(

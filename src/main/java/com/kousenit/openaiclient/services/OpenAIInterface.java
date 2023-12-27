@@ -25,7 +25,7 @@ public interface OpenAIInterface {
     byte[] getTextToSpeechResponse(@RequestBody TTSRequest ttsRequest);
 
     default ChatRequest createChatRequest(String prompt) {
-        return new ChatRequest("gpt-3.5-turbo",
+        return new ChatRequest(OpenAIService.GPT4,
                 List.of(new Message(Role.USER, prompt)),
                 0.7);
     }
@@ -38,10 +38,4 @@ public interface OpenAIInterface {
         return response.choices().get(0).message().content();
     }
 
-//    @PostExchange(value = "/audio/transcriptions", accept = "application/json", contentType = "multipart/form-data")
-//    ResponseEntity<TranscriptionResponse> transcribe(
-//            @RequestPart("file") MultipartFile audioFile,
-//            @RequestPart("model") String model,
-//            @RequestPart("prompt") String prompt
-//    );
 }
