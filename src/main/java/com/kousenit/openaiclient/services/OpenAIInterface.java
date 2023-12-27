@@ -21,6 +21,9 @@ public interface OpenAIInterface {
     @PostExchange(value = "/images/generations", accept = "application/json", contentType = "application/json")
     ImageResponse getImageResponse(@RequestBody ImageRequest imageRequest);
 
+    @PostExchange(value = "/audio/speech", accept = "audio/mpeg", contentType = "application/json")
+    byte[] getTextToSpeechResponse(@RequestBody TTSRequest ttsRequest);
+
     default ChatRequest createChatRequest(String prompt) {
         return new ChatRequest("gpt-3.5-turbo",
                 List.of(new Message(Role.USER, prompt)),

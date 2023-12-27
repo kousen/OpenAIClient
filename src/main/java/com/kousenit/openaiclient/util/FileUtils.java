@@ -42,4 +42,19 @@ public class FileUtils {
         }
     }
 
+    public static String writeSoundBytesToFile(byte[] bytes) {
+        String timestamp = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String fileName = String.format("audio_%s.mp3", timestamp);
+        Path directory = Paths.get("src/main/resources/audio");
+        Path filePath = directory.resolve(fileName);
+        try {
+            Files.write(filePath, bytes, StandardOpenOption.CREATE_NEW);
+            return fileName;
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error writing audio to file", e);
+        }
+    }
+
+
 }

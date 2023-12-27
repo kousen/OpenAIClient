@@ -3,6 +3,7 @@ package com.kousenit.openaiclient.services;
 import com.kousenit.openaiclient.json.ChatRequest;
 import com.kousenit.openaiclient.json.ImageRequest;
 import com.kousenit.openaiclient.json.Message;
+import com.kousenit.openaiclient.json.Voice;
 import com.kousenit.openaiclient.util.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,12 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT35),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
-                () -> assertThat(chatRequest.messages().get(0).role()).isEqualTo(Role.USER),
-                () -> assertThat(chatRequest.messages().get(0).content()).isEqualTo(prompt));
+                () -> assertThat(chatRequest.messages()
+                        .get(0)
+                        .role()).isEqualTo(Role.USER),
+                () -> assertThat(chatRequest.messages()
+                        .get(0)
+                        .content()).isEqualTo(prompt));
     }
 
     @Test
@@ -78,5 +83,36 @@ class OpenAIServiceTest {
                 () -> assertThat(imageRequest.n()).isEqualTo(1),
                 () -> assertThat(imageRequest.size()).isEqualTo("512x512"),
                 () -> assertThat(imageRequest.response_format()).isEqualTo("b64_json"));
+    }
+
+    @Test
+    void getAudioResponse() {
+        String prompt = """
+                The YouTube channel, "Tales from the jar side" is your best
+                source for learning about Java, Spring, and other open source
+                technologies, especially when combined with AI tools.
+                      
+                The companion newsletter of the same name, hosted on Substack,
+                is also a lot of fun.
+                """;
+        openAIService.getAudioResponse(prompt);
+    }
+
+    @Test
+    void playMp3UsingJLayer() {
+        openAIService.playMp3UsingJLayer("tftjs.mp3");
+    }
+
+    @Test
+    void createAndPlay() {
+        String prompt = """
+                The YouTube channel, "Tales from the jar side" is your best
+                source for learning about Java, Spring, and other open source
+                technologies, especially when combined with AI tools.
+                      
+                The companion newsletter of the same name, hosted on Substack,
+                is also a lot of fun.
+                """;
+        openAIService.createAndPlay(prompt, Voice.FABLE);
     }
 }

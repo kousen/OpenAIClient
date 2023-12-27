@@ -1,18 +1,27 @@
 package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.*;
+import com.kousenit.openaiclient.util.FileUtils;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
     public static final String GPT4 = "gpt-4";
+
+    public final static String TTS_1 = "tts-1";
+    public final static String TTS_1_HD = "tts-1-hd";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
@@ -50,4 +59,40 @@ public class OpenAIService {
     public ImageRequest createImageRequestFromDefaults(String prompt, int n, String size) {
         return openAIInterface.createImageRequest(prompt, n, size);
     }
+
+    public byte[] getAudioResponse(TTSRequest ttsRequest) {
+        byte[] bytes = openAIInterface.getTextToSpeechResponse(ttsRequest);
+        String fileName = FileUtils.writeSoundBytesToFile(bytes);
+        logger.info("Saved {} to {}", fileName, "src/main/resources/audio");
+        return bytes;
+    }
+
+    public void getAudioResponse(String prompt) {
+        TTSRequest ttsRequest = new TTSRequest(TTS_1_HD, prompt, Voice.ALLOY);
+        getAudioResponse(ttsRequest);
+    }
+
+    public void playMp3UsingJLayer(String fileName) {
+        BufferedInputStream buffer = new BufferedInputStream(
+                Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("audio/%s".formatted(fileName))));
+        try {
+            Player player = new Player(buffer);
+            player.play();
+        } catch (JavaLayerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createAndPlay(String text, Voice voice) {
+        TTSRequest ttsRequest = new TTSRequest(TTS_1_HD, text, voice);
+        byte[] bytes = getAudioResponse(ttsRequest);
+        var bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
+        try {
+            new Player(bufferedInputStream).play();
+        } catch (JavaLayerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
