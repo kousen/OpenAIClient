@@ -32,13 +32,13 @@ public class OpenAIService {
     @Autowired
     public OpenAIService(OpenAIInterface openAIInterface) {
         this.openAIInterface = openAIInterface;
-
         modelNames.addAll(getModelNames());
     }
 
     public List<String> getModelNames() {
         return openAIInterface.listModels().data().stream()
                 .map(ModelList.Model::id)
+                .sorted()
                 .toList();
     }
 

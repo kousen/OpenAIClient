@@ -40,9 +40,7 @@ class OpenAIServiceTest {
     void getAllModels() {
         List<String> modelNames = openAIService.getModelNames();
         assertThat(modelNames).anyMatch(name -> name.contains("gpt"));
-        modelNames.stream()
-                .sorted()
-                .forEach(System.out::println);
+        modelNames.forEach(System.out::println);
     }
 
     @Test
@@ -78,7 +76,7 @@ class OpenAIServiceTest {
         ChatRequest chatRequest = openAIService.createChatRequestFromDefaults(prompt);
         assertThat(chatRequest.messages()).isNotNull();
         assertAll(
-                () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT35),
+                () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT4),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
                 () -> assertThat(chatRequest.messages()
