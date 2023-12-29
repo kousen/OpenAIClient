@@ -30,7 +30,8 @@ class OpenAIServiceTest {
     @Test
     void getGPTModels() {
         List<String> modelNames = openAIService.getModelNames();
-        assertThat(modelNames).anyMatch(name -> name.contains("gpt"));
+        assertThat(modelNames).anyMatch(name -> name.contains(OpenAIService.GPT35));
+        assertThat(modelNames).anyMatch(name -> name.contains(OpenAIService.GPT4));
         modelNames.stream()
                 .filter(name -> name.contains("gpt"))
                 .forEach(System.out::println);
@@ -38,9 +39,7 @@ class OpenAIServiceTest {
 
     @Test
     void getAllModels() {
-        List<String> modelNames = openAIService.getModelNames();
-        assertThat(modelNames).anyMatch(name -> name.contains("gpt"));
-        modelNames.forEach(System.out::println);
+        openAIService.getModelNames().forEach(System.out::println);
     }
 
     @Test
