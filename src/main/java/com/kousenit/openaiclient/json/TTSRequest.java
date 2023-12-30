@@ -1,14 +1,13 @@
 package com.kousenit.openaiclient.json;
 
-// voice: one of alloy, echo, fable, onyx, nova, and shimmer
-// response_format: mp3, opus, aac, and flac
-// speed: between 0.25 and 4.0
+import jakarta.validation.constraints.*;
+
 public record TTSRequest(
-        String model,
-        String input,
+        @Pattern(regexp = "tts-1(-hd)?") String model,
+        @NotBlank @Size(max = 4096) String input,
         Voice voice,
         ResponseFormat responseFormat,
-        double speed
+        @DecimalMin("0.25") @DecimalMax("4.0") double speed
 ) {
     public TTSRequest(String model, String input, Voice voice) {
         this(model, input, voice, ResponseFormat.MP3, 1.0);

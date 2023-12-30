@@ -2,6 +2,8 @@ package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.*;
 import com.kousenit.openaiclient.util.FileUtils;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class OpenAIService {
@@ -29,9 +32,12 @@ public class OpenAIService {
 
     private final OpenAIInterface openAIInterface;
 
+    private final Validator validator;
+
     @Autowired
-    public OpenAIService(OpenAIInterface openAIInterface) {
+    public OpenAIService(OpenAIInterface openAIInterface, Validator validator) {
         this.openAIInterface = openAIInterface;
+        this.validator = validator;
         modelNames.addAll(getModelNames());
     }
 
@@ -61,6 +67,10 @@ public class OpenAIService {
     }
 
     public byte[] getAudioResponse(TTSRequest ttsRequest) {
+        Set<ConstraintViolation<TTSRequest>> violations = validator.validate(ttsRequest);
+        if (!violations.isEmpty()) {
+            throw new IllegalArgumentException(violations.toString());
+        }
         byte[] bytes = openAIInterface.getTextToSpeechResponse(ttsRequest);
         String fileName = FileUtils.writeSoundBytesToFile(bytes);
         logger.info("Saved {} to {}", fileName, "src/main/resources/audio");
@@ -81,7 +91,6 @@ public class OpenAIService {
         TTSRequest ttsRequest = new TTSRequest(model, prompt, voice);
         getAudioResponse(ttsRequest);
     }
-
 
     public void playMp3UsingJLayer(String fileName) {
         BufferedInputStream buffer = new BufferedInputStream(

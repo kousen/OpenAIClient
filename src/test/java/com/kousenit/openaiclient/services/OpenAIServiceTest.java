@@ -23,9 +23,8 @@ class OpenAIServiceTest {
             The YouTube channel, "Tales from the jar side" is your best
             source for learning about Java, Spring, and other open source
             technologies, especially when combined with AI tools.
-            The companion newsletter of the same name, hosted on Substack,
-            is also a lot of fun.
-            """;
+            The companion newsletter of the same name is also a lot of fun.
+            """.replaceAll("\\s+", " ").trim();
 
     @Test
     void getGPTModels() {
@@ -78,12 +77,8 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT4),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
-                () -> assertThat(chatRequest.messages()
-                        .get(0)
-                        .role()).isEqualTo(Role.USER),
-                () -> assertThat(chatRequest.messages()
-                        .get(0)
-                        .content()).isEqualTo(prompt));
+                () -> assertThat(chatRequest.messages().get(0).role()).isEqualTo(Role.USER),
+                () -> assertThat(chatRequest.messages().get(0).content()).isEqualTo(prompt));
     }
 
     @Test
