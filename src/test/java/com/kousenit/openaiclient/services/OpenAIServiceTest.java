@@ -77,8 +77,8 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT4),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
-                () -> assertThat(chatRequest.messages().get(0).role()).isEqualTo(Role.USER),
-                () -> assertThat(chatRequest.messages().get(0).content()).isEqualTo(prompt));
+                () -> assertThat(chatRequest.messages().getFirst().role()).isEqualTo(Role.USER),
+                () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(prompt));
     }
 
     @Test
@@ -122,6 +122,8 @@ class OpenAIServiceTest {
     }
 
     @Test
+    // NOTE: The JUnit library is referred to here as J-Unit to make
+    // the audio come out correctly.
     void createAndPlay_includingTechnicalWords() {
         Voice voice = Voice.randomVoice();
         System.out.println("Using voice " + voice);
@@ -134,10 +136,10 @@ class OpenAIServiceTest {
                 Java records instead of POJOs, and the enums are translated
                 to lowercase using the @JsonValue annotation.
                 
-                Testing is done with JUnit 5 and the AssertJ testing library.
+                Testing is done with J-Unit 5 and the AssertJ testing library.
                 
-                Since the cost of the base TTS model is only $0.0015 per
-                1000 characters, this test cost much less than a penny to run.
+                Since the cost of the base TTS model is only 1.5 cents per
+                1000 characters, this test cost less than a penny to run.
                 """, voice);
     }
 }
