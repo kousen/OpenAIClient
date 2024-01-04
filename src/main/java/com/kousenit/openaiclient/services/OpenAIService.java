@@ -4,6 +4,7 @@ import com.kousenit.openaiclient.json.ChatRequest;
 import com.kousenit.openaiclient.json.ChatResponse;
 import com.kousenit.openaiclient.json.Message;
 import com.kousenit.openaiclient.json.ModelList;
+import com.kousenit.openaiclient.util.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,22 @@ public class OpenAIService {
         ChatRequest chatRequest = new ChatRequest(model, messages, temperature);
         ChatResponse response = openAIInterface.getChatResponse(chatRequest);
         logger.info("Usage: {}", response.usage());
-        return openAIInterface.extractStringResponse(response);
+        return extractStringResponse(response);
     }
 
     public ChatRequest createChatRequestFromDefaults(String prompt) {
-        return openAIInterface.createChatRequest(prompt);
+        return createChatRequest(prompt);
     }
+
+    private ChatRequest createChatRequest(String prompt) {
+        return new ChatRequest(OpenAIService.GPT4,
+                List.of(new Message(Role.USER, prompt)),
+                0.7);
+    }
+
+    private String extractStringResponse(ChatResponse response) {
+        return response.choices().getFirst().message().content();
+    }
+
+
 }

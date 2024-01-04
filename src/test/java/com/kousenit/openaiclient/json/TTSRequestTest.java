@@ -1,12 +1,13 @@
 package com.kousenit.openaiclient.json;
 
-import com.kousenit.openaiclient.services.OpenAIService;
+import com.kousenit.openaiclient.services.TextToSpeechService;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class TTSRequestTest {
@@ -15,9 +16,9 @@ class TTSRequestTest {
 
     @Test
     void testValidAudioModels() {
-        TTSRequest request = new TTSRequest(OpenAIService.TTS_1, "Hello, world", Voice.ALLOY);
+        TTSRequest request = new TTSRequest(TextToSpeechService.TTS_1, "Hello, world", Voice.ALLOY);
         assertTrue(validator.validate(request).isEmpty());
-        request = new TTSRequest(OpenAIService.TTS_1_HD, "Hello, world", Voice.ALLOY);
+        request = new TTSRequest(TextToSpeechService.TTS_1_HD, "Hello, world", Voice.ALLOY);
         assertTrue(validator.validate(request).isEmpty());
     }
 

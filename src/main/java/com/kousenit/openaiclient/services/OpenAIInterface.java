@@ -1,13 +1,10 @@
 package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.*;
-import com.kousenit.openaiclient.util.Role;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
-
-import java.util.List;
 
 @HttpExchange("/v1")
 public interface OpenAIInterface {
@@ -23,15 +20,4 @@ public interface OpenAIInterface {
 
     @PostExchange(value = "/audio/speech", accept = "audio/mpeg", contentType = "application/json")
     byte[] getTextToSpeechResponse(@RequestBody TTSRequest ttsRequest);
-
-    default ChatRequest createChatRequest(String prompt) {
-        return new ChatRequest(OpenAIService.GPT4,
-                List.of(new Message(Role.USER, prompt)),
-                0.7);
-    }
-
-    default String extractStringResponse(ChatResponse response) {
-        return response.choices().getFirst().message().content();
-    }
-
 }
