@@ -16,11 +16,11 @@ import java.util.List;
 public class DallEService {
     private final Logger logger = LoggerFactory.getLogger(DallEService.class);
 
+    public static final String DALL_E_2 = "dall-e-2";
+    public static final String DALL_E_3 = "dall-e-3";
+
     @Value("${dalle.default_image_size}")
     private String DEFAULT_IMAGE_SIZE;
-
-    @Value("${dalle.response_format}")
-    private String RESPONSE_FORMAT;
 
     private final OpenAIInterface openAIInterface;
 
@@ -29,13 +29,25 @@ public class DallEService {
         this.openAIInterface = openAIInterface;
     }
 
-    public void downloadImagesFromPromptAndNumber(String prompt, int numberOfImages) {
-        ImageRequest imageRequest = new ImageRequest(
-                prompt,
-                numberOfImages,
-                DEFAULT_IMAGE_SIZE,
-                RESPONSE_FORMAT);
-        ImageResponse imageResponse = openAIInterface.getImageResponse(imageRequest);
+    public ImageRequest createImageRequest(String model, String prompt, int n,
+                                           String quality, String size) {
+        return new ImageRequest(model, prompt, n, quality, size, "b64_json");
+    }
+
+    public ImageResponse getImageResponse(ImageRequest imageRequest) {
+        logger.info("Sending image request: {}", imageRequest);
+        return openAIInterface.getImageResponse(imageRequest);
+    }
+
+    public ImageRequest createImageRequestFromDefaults(String prompt, int n) {
+        return createImageRequest(DallEService.DALL_E_3, prompt, n,
+                "standard", DEFAULT_IMAGE_SIZE);
+    }
+
+    public void downloadImagesFromPromptAndNumber(String model, String prompt, int numberOfImages) {
+        ImageRequest imageRequest = createImageRequest(model, prompt, numberOfImages,
+                "standard", DEFAULT_IMAGE_SIZE);
+        ImageResponse imageResponse = getImageResponse(imageRequest);
         List<Boolean> results = imageResponse.data().stream()
                 .map(Image::b64_json)
                 .map(FileUtils::writeImageToFile)

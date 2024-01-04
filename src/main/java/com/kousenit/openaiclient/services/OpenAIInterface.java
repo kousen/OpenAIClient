@@ -30,12 +30,8 @@ public interface OpenAIInterface {
                 0.7);
     }
 
-    default ImageRequest createImageRequest(String prompt, int n, String size) {
-        return new ImageRequest(prompt, n, size, "b64_json");
-    }
-
     default String extractStringResponse(ChatResponse response) {
-        return response.choices().get(0).message().content();
+        return response.choices().getFirst().message().content();
     }
 
 }

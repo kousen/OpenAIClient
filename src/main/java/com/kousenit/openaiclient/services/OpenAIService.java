@@ -62,10 +62,6 @@ public class OpenAIService {
         return openAIInterface.createChatRequest(prompt);
     }
 
-    public ImageRequest createImageRequestFromDefaults(String prompt, int n, String size) {
-        return openAIInterface.createImageRequest(prompt, n, size);
-    }
-
     public byte[] getAudioResponse(TTSRequest ttsRequest) {
         Set<ConstraintViolation<TTSRequest>> violations = validator.validate(ttsRequest);
         if (!violations.isEmpty()) {

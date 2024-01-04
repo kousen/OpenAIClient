@@ -1,7 +1,6 @@
 package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.ChatRequest;
-import com.kousenit.openaiclient.json.ImageRequest;
 import com.kousenit.openaiclient.json.Message;
 import com.kousenit.openaiclient.json.Voice;
 import com.kousenit.openaiclient.util.Role;
@@ -79,19 +78,6 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.messages()).hasSize(1),
                 () -> assertThat(chatRequest.messages().getFirst().role()).isEqualTo(Role.USER),
                 () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(prompt));
-    }
-
-    @Test
-    void createImageRequestFromDefaults() {
-        String prompt = """
-                Portrait photography during the golden hour,
-                using the soft, warm light to highlight the subject.""";
-        ImageRequest imageRequest = openAIService.createImageRequestFromDefaults(prompt, 1, "512x512");
-        assertAll(
-                () -> assertThat(imageRequest.prompt()).isEqualTo(prompt),
-                () -> assertThat(imageRequest.n()).isEqualTo(1),
-                () -> assertThat(imageRequest.size()).isEqualTo("512x512"),
-                () -> assertThat(imageRequest.response_format()).isEqualTo("b64_json"));
     }
 
     @Test
