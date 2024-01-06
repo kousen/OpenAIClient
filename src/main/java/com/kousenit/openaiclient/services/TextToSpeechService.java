@@ -41,7 +41,7 @@ public class TextToSpeechService {
         validateRequest(ttsRequest);
         byte[] bytes = openAIInterface.getTextToSpeechResponse(ttsRequest);
         String fileName = FileUtils.writeSoundBytesToFile(bytes);
-        logger.info("Saved {} to {}", fileName, "src/main/resources/audio");
+        logger.info("Saved {} to {}", fileName, FileUtils.AUDIO_DIRECTORY);
         return bytes;
     }
 
