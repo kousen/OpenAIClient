@@ -9,15 +9,24 @@ import org.springframework.web.service.annotation.PostExchange;
 @HttpExchange("/v1")
 public interface OpenAIInterface {
 
+    // Models
     @GetExchange(value = "/models", accept = "application/json")
     ModelList listModels();
 
-    @PostExchange(value = "/chat/completions", accept = "application/json", contentType = "application/json")
+    // Chat
+    @PostExchange(value = "/chat/completions",
+            accept = "application/json", contentType = "application/json")
     ChatResponse getChatResponse(@RequestBody ChatRequest chatRequest);
 
-    @PostExchange(value = "/images/generations", accept = "application/json", contentType = "application/json")
+    // Images
+    @PostExchange(value = "/images/generations",
+            accept = "application/json", contentType = "application/json")
     ImageResponse getImageResponse(@RequestBody ImageRequest imageRequest);
 
-    @PostExchange(value = "/audio/speech", accept = "audio/mpeg", contentType = "application/json")
+    // Text-to-Speech
+    @PostExchange(value = "/audio/speech",
+            accept = "audio/mpeg", contentType = "application/json")
     byte[] getTextToSpeechResponse(@RequestBody TTSRequest ttsRequest);
+
+    // NOTE: See TranscriptService for the transcribing audio to text
 }

@@ -19,8 +19,11 @@ import java.util.Set;
 
 @Service
 public class TextToSpeechService {
-    public final static String TTS_1 = "tts-1";
-    public final static String TTS_1_HD = "tts-1-hd";
+    public final static String TTS_1 = "tts-1-1106";
+    public final static String TTS_1_HD = "tts-1-hd-1106";
+
+    private static final Voice DEFAULT_VOICE = Voice.ALLOY;
+    private static final String DEFAULT_MODEL = TTS_1;
 
     private final Logger logger = LoggerFactory.getLogger(TextToSpeechService.class);
 
@@ -46,12 +49,12 @@ public class TextToSpeechService {
     }
 
     public void getAudioResponse(String prompt) {
-        TTSRequest ttsRequest = new TTSRequest(TTS_1, prompt, Voice.ALLOY);
+        TTSRequest ttsRequest = new TTSRequest(DEFAULT_MODEL, prompt, DEFAULT_VOICE);
         getAudioResponse(ttsRequest);
     }
 
     public void getAudioResponse(String prompt, Voice voice) {
-        TTSRequest ttsRequest = new TTSRequest(TTS_1, prompt, voice);
+        TTSRequest ttsRequest = new TTSRequest(DEFAULT_MODEL, prompt, voice);
         getAudioResponse(ttsRequest);
     }
 

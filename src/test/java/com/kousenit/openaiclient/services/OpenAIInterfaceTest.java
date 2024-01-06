@@ -15,6 +15,7 @@ class OpenAIInterfaceTest {
     void listModelIds() {
         openAIInterface.listModels().data().stream()
                 .map(ModelList.Model::id)
+                .sorted()
                 .forEach(System.out::println);
     }
 

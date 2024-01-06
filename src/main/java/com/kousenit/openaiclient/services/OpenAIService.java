@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,14 +19,11 @@ public class OpenAIService {
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
-    private final List<String> modelNames = new ArrayList<>();
-
     private final OpenAIInterface openAIInterface;
 
     @Autowired
     public OpenAIService(OpenAIInterface openAIInterface) {
         this.openAIInterface = openAIInterface;
-        modelNames.addAll(getModelNames());
     }
 
     public List<String> getModelNames() {
@@ -38,9 +34,6 @@ public class OpenAIService {
     }
 
     public String getChatResponse(String model, List<Message> messages, double temperature) {
-        if (!modelNames.contains(model)) {
-            throw new IllegalArgumentException("Invalid model name: " + model);
-        }
         ChatRequest chatRequest = new ChatRequest(model, messages, temperature);
         ChatResponse response = openAIInterface.getChatResponse(chatRequest);
         logger.info("Usage: {}", response.usage());

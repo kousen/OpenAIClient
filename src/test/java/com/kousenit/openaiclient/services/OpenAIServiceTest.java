@@ -29,7 +29,9 @@ class OpenAIServiceTest {
 
     @Test
     void getAllModels() {
-        openAIService.getModelNames().forEach(System.out::println);
+        openAIService.getModelNames().stream()
+                .sorted()
+                .forEach(System.out::println);
     }
 
     @Test

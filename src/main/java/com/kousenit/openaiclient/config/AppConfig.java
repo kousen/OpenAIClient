@@ -24,7 +24,8 @@ public class AppConfig {
                                      @Value("${whisper.max_allowed_size_bytes}") DataSize maxAllowedSize) {
         return WebClient.builder()
                 .defaultHeader("Authorization", "Bearer %s".formatted(apiKey))
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize((int) maxAllowedSize.toBytes()))
+                .codecs(configurer -> configurer.defaultCodecs()
+                        .maxInMemorySize((int) maxAllowedSize.toBytes()))
                 .baseUrl(baseUrl)
                 .build();
     }

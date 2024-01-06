@@ -20,4 +20,10 @@ public class TextToSpeechController {
         service.getAudioResponse(TextToSpeechService.TTS_1_HD, text, Voice.randomVoice());
         return ResponseEntity.ok("(%s...) converted to mp3".formatted(text.substring(0, 24)));
     }
+
+    @PostMapping("/tts/play")
+    public ResponseEntity<String> convertTextAndPlay(@RequestBody String text) {
+        service.createAndPlay(text, Voice.randomVoice());
+        return ResponseEntity.ok("(%s...) converted to mp3".formatted(text.substring(0, 24)));
+    }
 }
