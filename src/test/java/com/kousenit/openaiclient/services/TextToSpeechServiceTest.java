@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 class TextToSpeechServiceTest {
     @Autowired
@@ -19,17 +21,21 @@ class TextToSpeechServiceTest {
 
     @Test
     void getAudioResponse() {
-        service.getAudioResponse(audioPrompt);
+        byte[] audioResponse = service.getAudioResponse(audioPrompt);
+        assertThat(audioResponse.length).isPositive();
     }
 
     @Test
     void getAudioResponseWithVoice() {
-        service.getAudioResponse(audioPrompt, Voice.SHIMMER);
+        byte[] audioResponse = service.getAudioResponse(audioPrompt, Voice.SHIMMER);
+        assertThat(audioResponse.length).isPositive();
     }
 
     @Test
     void getAudioResponseWithModelAndVoice() {
-        service.getAudioResponse(TextToSpeechService.TTS_1_HD, audioPrompt, Voice.FABLE);
+        byte[] audioResponse = service.getAudioResponse(
+                TextToSpeechService.TTS_1_HD, audioPrompt, Voice.FABLE);
+        assertThat(audioResponse.length).isPositive();
     }
 
     @Test

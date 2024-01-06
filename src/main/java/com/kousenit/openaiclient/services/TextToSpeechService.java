@@ -38,35 +38,38 @@ public class TextToSpeechService {
     }
 
     public byte[] getAudioResponse(TTSRequest ttsRequest) {
-        Set<ConstraintViolation<TTSRequest>> violations = validator.validate(ttsRequest);
-        if (!violations.isEmpty()) {
-            throw new IllegalArgumentException(violations.toString());
-        }
+        validateRequest(ttsRequest);
         byte[] bytes = openAIInterface.getTextToSpeechResponse(ttsRequest);
         String fileName = FileUtils.writeSoundBytesToFile(bytes);
         logger.info("Saved {} to {}", fileName, "src/main/resources/audio");
         return bytes;
     }
 
-    public void getAudioResponse(String prompt) {
-        TTSRequest ttsRequest = new TTSRequest(DEFAULT_MODEL, prompt, DEFAULT_VOICE);
-        getAudioResponse(ttsRequest);
+    public byte[] getAudioResponse(String prompt) {
+        return getAudioResponse(new TTSRequest(DEFAULT_MODEL, prompt, DEFAULT_VOICE));
     }
 
-    public void getAudioResponse(String prompt, Voice voice) {
-        TTSRequest ttsRequest = new TTSRequest(DEFAULT_MODEL, prompt, voice);
-        getAudioResponse(ttsRequest);
+    public byte[] getAudioResponse(String prompt, Voice voice) {
+        return getAudioResponse(new TTSRequest(DEFAULT_MODEL, prompt, voice));
     }
 
-    public void getAudioResponse(String model, String prompt, Voice voice) {
-        TTSRequest ttsRequest = new TTSRequest(model, prompt, voice);
-        getAudioResponse(ttsRequest);
+    public byte[] getAudioResponse(String model, String prompt, Voice voice) {
+        return getAudioResponse(new TTSRequest(model, prompt, voice));
     }
 
     public void playMp3UsingJLayer(String fileName) {
         BufferedInputStream buffer = new BufferedInputStream(
                 Objects.requireNonNull(getClass().getClassLoader()
                         .getResourceAsStream("audio/%s".formatted(fileName))));
+        playMp3(buffer);
+    }
+
+    public void playMp3UsingJLayer(byte[] bytes) {
+        var buffer = new BufferedInputStream(new ByteArrayInputStream(bytes));
+        playMp3(buffer);
+    }
+
+    private void playMp3(BufferedInputStream buffer) {
         try {
             Player player = new Player(buffer);
             player.play();
@@ -78,12 +81,14 @@ public class TextToSpeechService {
     public void createAndPlay(String text, Voice voice) {
         TTSRequest ttsRequest = new TTSRequest(TTS_1_HD, text, voice);
         byte[] bytes = getAudioResponse(ttsRequest);
-        var bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
-        try {
-            new Player(bufferedInputStream).play();
-        } catch (JavaLayerException e) {
-            throw new RuntimeException(e);
-        }
+        playMp3UsingJLayer(bytes);
     }
 
+    private void validateRequest(TTSRequest ttsRequest) {
+        Set<ConstraintViolation<TTSRequest>> violations = validator.validate(ttsRequest);
+        if (!violations.isEmpty()) {
+            throw new IllegalArgumentException(violations.toString());
+        }
+    }
 }
+
