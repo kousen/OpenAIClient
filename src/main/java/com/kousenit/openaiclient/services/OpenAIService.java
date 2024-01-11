@@ -37,7 +37,7 @@ public class OpenAIService {
         ChatRequest chatRequest = new ChatRequest(model, messages, temperature);
         ChatResponse response = openAIInterface.getChatResponse(chatRequest);
         logger.info("Usage: {}", response.usage());
-        return extractStringResponse(response);
+        return response.choices().getFirst().message().content();
     }
 
     public ChatRequest createChatRequestFromDefaults(String prompt) {
@@ -49,10 +49,4 @@ public class OpenAIService {
                 List.of(new Message(Role.USER, prompt)),
                 0.7);
     }
-
-    private String extractStringResponse(ChatResponse response) {
-        return response.choices().getFirst().message().content();
-    }
-
-
 }
