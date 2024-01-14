@@ -71,4 +71,20 @@ class TextToSpeechServiceTest {
                 1000 characters, this test cost less than a penny to run.
                 """, voice);
     }
+
+    @Test
+    void createAndPlay_withVoice() {
+        service.createAndPlay("""
+                 Here are 5 key bullet points summarizing the video:
+                 * Demonstrates using Spring Boot and OpenAI's text-to-speech API
+                  to convert text into audio MP3 files
+                 * Maps the OpenAI API request/response format into a Java record
+                  class for easy access
+                 * Implements a Spring HTTP exchange interface to call the API with
+                  proper annotations
+                 * Saves the returned audio byte array into an MP3 file for playback
+                 * Shows how to add request validation and bundle it all into a
+                  fast-starting GraalVM native image executable
+                """, Voice.FABLE);
+    }
 }
