@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
-    public static final String GPT4 = "gpt-4-1106-preview";
+    public static final String GPT4 = "gpt-4-turbo-preview";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
