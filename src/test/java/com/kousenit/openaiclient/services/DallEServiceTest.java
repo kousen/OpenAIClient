@@ -23,12 +23,14 @@ class DallEServiceTest {
 
     @Test
     void downloadDallE2ImagesFromPromptAndNumber() {
-        dallEService.downloadImagesFromPromptAndNumber(DallEService.DALL_E_2, DEFAULT_IMAGE_PROMPT, 4);
+        dallEService.downloadImagesFromPromptAndNumber(
+                DallEService.DALL_E_2, DEFAULT_IMAGE_PROMPT, 4);
     }
 
     @Test
     void downloadDallE3ImagesFromPromptAndNumber() {
-        dallEService.downloadImagesFromPromptAndNumber(DallEService.DALL_E_3, DEFAULT_IMAGE_PROMPT, 1);
+        dallEService.downloadImagesFromPromptAndNumber(
+                DallEService.DALL_E_3, DEFAULT_IMAGE_PROMPT, 1);
     }
 
     @Test
@@ -37,7 +39,7 @@ class DallEServiceTest {
         assertAll(
                 () -> assertThat(imageRequest.model()).isEqualTo(DallEService.DALL_E_3),
                 () -> assertThat(imageRequest.prompt()).isEqualTo(DEFAULT_IMAGE_PROMPT),
-                () -> assertThat(imageRequest.n()).isEqualTo(1),
+                () -> assertThat(imageRequest.n()).isOne(),
                 () -> assertThat(imageRequest.size()).isEqualTo("1024x1024"),
                 () -> assertThat(imageRequest.responseFormat()).isEqualTo("b64_json"));
     }
