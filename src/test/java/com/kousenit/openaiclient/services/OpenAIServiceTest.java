@@ -20,8 +20,9 @@ class OpenAIServiceTest {
     @Test
     void getGPTModels() {
         List<String> modelNames = openAIService.getModelNames();
-        assertThat(modelNames).anyMatch(name -> name.contains(OpenAIService.GPT35));
-        assertThat(modelNames).anyMatch(name -> name.contains(OpenAIService.GPT4));
+        assertThat(modelNames)
+                .anyMatch(name -> name.contains(OpenAIService.GPT35))
+                .anyMatch(name -> name.contains(OpenAIService.GPT4));
         modelNames.stream()
                 .filter(name -> name.contains("gpt"))
                 .forEach(System.out::println);
