@@ -1,7 +1,7 @@
-package com.kousenit.openaiclient.services;
+package com.kousenit.claude.services;
 
-import com.kousenit.openaiclient.json.ClaudeRequest;
-import com.kousenit.openaiclient.json.ClaudeResponse;
+import com.kousenit.claude.json.ClaudeRequest;
+import com.kousenit.claude.json.ClaudeResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;

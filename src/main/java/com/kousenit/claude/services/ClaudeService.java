@@ -1,9 +1,10 @@
-package com.kousenit.openaiclient.services;
+package com.kousenit.claude.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kousenit.openaiclient.json.ClaudeRequest;
-import com.kousenit.openaiclient.json.ClaudeResponse;
+import com.kousenit.claude.json.ClaudeRequest;
+import com.kousenit.claude.json.ClaudeResponse;
+import com.kousenit.openaiclient.services.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.kousenit.openaiclient.services;
+package com.kousenit.claude.services;
 
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
