@@ -16,21 +16,16 @@ public class MistralService {
     public static final String OPEN_MISTRAL_7B = "open-mistral-7b";
     public static final String OPEN_MIXTRAL_8x7B = "open-mixtral-8x7b";
 
-    private final RestClient restClient;
-
-    public MistralService(RestClient restClient) {
-        this.restClient = restClient;
-    }
+    private final RestClient restClient = RestClient.create("https://api.mistral.ai");
 
     public record MistralRequest(String model, List<Message> messages) {
     }
 
-    private final String url = "https://api.mistral.ai/v1/";
     private final String apiKey = System.getenv("MISTRAL_API_KEY");
 
     public ModelList listModels() {
         return restClient.get()
-                .uri(url + "models")
+                .uri("/v1/models")
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Accept", "application/json")
                 .retrieve()
@@ -41,7 +36,7 @@ public class MistralService {
         MistralRequest request = new MistralRequest(model, messages);
 
         return restClient.post()
-                .uri(url + "chat/completions")
+                .uri("/v1/chat/completions")
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")

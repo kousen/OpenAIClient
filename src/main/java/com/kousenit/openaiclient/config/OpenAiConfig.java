@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 @Configuration
-public class AppConfig {
+public class OpenAiConfig {
     @Bean
     public WebClient openAIWebClient(@Value("${openai.baseurl}") String baseUrl,
                                      @Value("${OPENAI_API_KEY}") String apiKey,
@@ -51,7 +51,7 @@ public class AppConfig {
     }
 
     @Bean
-    public ClaudeInterface claudeInterface(RestClient client) {
+    public ClaudeInterface claudeInterface(@Qualifier("claudeRestClient") RestClient client) {
         RestClientAdapter adapter = RestClientAdapter.create(client);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(ClaudeInterface.class);
