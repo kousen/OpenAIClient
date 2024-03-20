@@ -14,12 +14,10 @@ public record ModelList(List<Model> data) {
 
         @Override
         public String toString() {
-            return "Model{" +
-                   "id='" + id + '\'' +
-                   ", created=" + LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(created), ZoneId.systemDefault()) +
-                   ", ownedBy='" + ownedBy + '\'' +
-                   '}';
+            return "Model{id='%s', created=%s, ownedBy='%s'}".formatted(
+                    id, LocalDateTime.ofInstant(
+                            Instant.ofEpochSecond(created), ZoneId.systemDefault()),
+                    ownedBy);
         }
     }
 }

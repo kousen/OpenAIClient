@@ -1,5 +1,6 @@
 package com.kousenit.openaiclient.services;
 
+import com.kousenit.openaiclient.json.ChatRequest;
 import com.kousenit.openaiclient.json.ChatResponse;
 import com.kousenit.openaiclient.json.Message;
 import com.kousenit.openaiclient.json.ModelList;
@@ -18,9 +19,6 @@ public class MistralService {
 
     private final RestClient restClient = RestClient.create("https://api.mistral.ai");
 
-    public record MistralRequest(String model, List<Message> messages) {
-    }
-
     private final String apiKey = System.getenv("MISTRAL_API_KEY");
 
     public ModelList listModels() {
@@ -33,7 +31,7 @@ public class MistralService {
     }
 
     public ChatResponse complete(String model, List<Message> messages) {
-        MistralRequest request = new MistralRequest(model, messages);
+        ChatRequest request = new ChatRequest(model, messages, 0.7);
 
         return restClient.post()
                 .uri("/v1/chat/completions")
