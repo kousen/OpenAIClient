@@ -467,7 +467,7 @@ components:
                             name:
                               type: string
                             arguments:
-                              type: str
+                              type: string
                     example:
                       - function:
                           name: get_current_weather
@@ -547,7 +547,7 @@ components:
                   - 0.2
                   - 0.3
               index:
-                type: int
+                type: integer
                 example: 0
           example:
             - object: embedding
