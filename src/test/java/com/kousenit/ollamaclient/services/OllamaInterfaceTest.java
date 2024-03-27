@@ -19,7 +19,7 @@ class OllamaInterfaceTest {
 
     @Test
     void generate() {
-        var request = new OllamaGenerateRequest("orca-mini",
+        var request = new OllamaGenerateTextRequest("orca-mini",
                 "Why is the sky blue?",
                 false);
         var response = ollamaInterface.generate(request);
@@ -43,7 +43,7 @@ class OllamaInterfaceTest {
     @ParameterizedTest(name = "model = {0}")
     @ValueSource(strings = {"orca-mini", "llama2", "gemma"})
     void multipleModels(String model) {
-        var request = new OllamaGenerateRequest(model,
+        var request = new OllamaGenerateTextRequest(model,
                 "Why is the sky blue?",
                 false);
         var response = ollamaInterface.generate(request);

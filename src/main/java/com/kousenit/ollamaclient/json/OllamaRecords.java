@@ -3,9 +3,26 @@ package com.kousenit.ollamaclient.json;
 import java.util.List;
 
 public class OllamaRecords {
-    public record OllamaGenerateRequest(String model,
-                                        String prompt,
-                                        boolean stream) { }
+
+    public sealed interface OllamaGenerateRequest
+            permits OllamaGenerateTextRequest, OllamaGenerateImageRequest {
+        String model();
+        String prompt();
+        boolean stream();
+    }
+
+    public record OllamaGenerateTextRequest(String model,
+                                            String prompt,
+                                            boolean stream)
+            implements OllamaGenerateRequest {
+    }
+
+    public record OllamaGenerateImageRequest(String model,
+                                             String prompt,
+                                             List<String> images,
+                                             boolean stream)
+            implements OllamaGenerateRequest {
+    }
 
     public record OllamaGenerateResponse(String model,
                                          String createdAt,
@@ -13,13 +30,16 @@ public class OllamaRecords {
                                          boolean done,
                                          long totalDuration,
                                          int promptEvalCount,
-                                         int evalCount) { }
+                                         int evalCount) {
+    }
 
-    public record Message(String role, String content) { }
+    public record Message(String role, String content) {
+    }
 
     public record OllamaChatRequest(String model,
                                     List<Message> messages,
-                                    boolean stream) { }
+                                    boolean stream) {
+    }
 
     public record OllamaChatResponse(String model,
                                      String createdAt,
@@ -27,5 +47,6 @@ public class OllamaRecords {
                                      boolean done,
                                      long totalDuration,
                                      int promptEvalCount,
-                                     int evalCount) { }
+                                     int evalCount) {
+    }
 }

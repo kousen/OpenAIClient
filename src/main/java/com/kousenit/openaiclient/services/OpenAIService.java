@@ -40,6 +40,10 @@ public class OpenAIService {
         return response.choices().getFirst().message().content();
     }
 
+    public String getChatResponse(String message) {
+        return getChatResponse(GPT4, List.of(new Message(Role.USER, message)), 0.7);
+    }
+
     public ChatRequest createChatRequestFromDefaults(String prompt) {
         return createChatRequest(prompt);
     }

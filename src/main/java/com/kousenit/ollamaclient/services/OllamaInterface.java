@@ -12,6 +12,12 @@ public interface OllamaInterface {
     @PostExchange("/chat")
     OllamaChatResponse chat(@RequestBody OllamaChatRequest question);
 
+//    @PostExchange("/generate")
+//    OllamaGenerateResponse generate(@RequestBody OllamaGenerateTextRequest question);
+//
+//    @PostExchange("/generate")
+//    OllamaGenerateResponse generate(@RequestBody OllamaGenerateImageRequest question);
+
     @PostExchange("/generate")
     OllamaGenerateResponse generate(@RequestBody OllamaGenerateRequest question);
 }

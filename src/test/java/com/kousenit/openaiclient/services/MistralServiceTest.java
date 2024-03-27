@@ -22,11 +22,11 @@ class MistralServiceTest {
     void complete() {
         Message message = new Message(Role.USER,
                 "Who is the most renowed French painter?");
-        String model = MistralService.MISTRAL_LARGE_LATEST;
+        String model = MistralService.MISTRAL_SMALL_LATEST;
         ChatResponse response = service.complete(model, List.of(message));
         assertNotNull(response);
         System.out.println(response);
-        assertEquals("mistral-large-latest", response.model());
+        assertEquals("mistral-small-latest", response.model());
         System.out.println(response.choices().getFirst().message().content());
     }
 

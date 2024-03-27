@@ -73,4 +73,15 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.messages().getFirst().role()).isEqualTo(Role.USER),
                 () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(prompt));
     }
+
+    @Test
+    void getChatResponseWithMessage() {
+        String response = openAIService.getChatResponse(
+                """
+                    According to Douglas Adams, what is the Ultimate Answer
+                    to the Ultimate Question of Life, the Universe,
+                    and Everything?""");
+        System.out.println(response);
+        assertTrue(response.contains("42"));
+    }
 }
