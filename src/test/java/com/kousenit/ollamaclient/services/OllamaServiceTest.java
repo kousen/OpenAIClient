@@ -19,7 +19,8 @@ class OllamaServiceTest {
 
     @Test
     void chat() {
-        var response = service.chat("orca-mini", "Why is the sky blue?");
+        var response = service.chat(OllamaService.LLAMA2,
+                "Why is the sky blue?");
         assertFalse(response.isBlank());
         System.out.println(response);
     }
@@ -44,7 +45,9 @@ class OllamaServiceTest {
     void generateWithText() {
         var response = service.generate(
                 new OllamaGenerateTextRequest(
-                        "orca-mini", "Why is the sky blue?", false));
+                        OllamaService.ORCA_MINI,
+                        "Why is the sky blue?",
+                        false));
         assertFalse(response.isBlank());
         assertThat(response).contains("scattering");
         System.out.println(response);
@@ -54,7 +57,8 @@ class OllamaServiceTest {
     void generateWithImage() {
         var response = service.generate(
                 new OllamaGenerateImageRequest(
-                        "llava", "What is in this image?",
+                        OllamaService.LLAVA,
+                        "What is in this image?",
                         List.of("src/main/resources/images/happy_leaping_robot.png"),
                         false));
         assertFalse(response.isBlank());
