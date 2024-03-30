@@ -1,6 +1,8 @@
 package com.kousenit.ollamaclient.services;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -41,26 +43,28 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
-    @Test
-    void generateWithText() {
-        var response = service.generate(
-                new OllamaGenerateTextRequest(
-                        OllamaService.ORCA_MINI,
-                        "Why is the sky blue?",
-                        false));
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(strings = {OllamaService.ORCA_MINI, OllamaService.LLAMA2, OllamaService.GEMMA})
+    void generateWithText(String model) {
+        var textRequest = new OllamaGenerateTextRequest(
+                model,
+                "Why is the sky blue?",
+                false);
+        var response = service.generate(textRequest);
         assertFalse(response.isBlank());
-        assertThat(response).contains("scattering");
+        assertThat(response).containsIgnoringCase("scattering");
         System.out.println(response);
     }
 
-    @Test
-    void generateWithImage() {
-        var response = service.generate(
-                new OllamaGenerateImageRequest(
-                        OllamaService.LLAVA,
-                        "What is in this image?",
-                        List.of("src/main/resources/images/happy_leaping_robot.png"),
-                        false));
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(strings = {OllamaService.LLAVA, OllamaService.BAKLLAVA})
+    void generateWithImage(String model) {
+        var imageRequest = new OllamaGenerateImageRequest(
+                model,
+                "What is in this image?",
+                List.of("src/main/resources/images/happy_leaping_robot.png"),
+                false);
+        var response = service.generate(imageRequest);
         assertFalse(response.isBlank());
         System.out.println(response);
     }
