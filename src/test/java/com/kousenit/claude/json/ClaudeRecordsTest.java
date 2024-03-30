@@ -31,7 +31,7 @@ public class ClaudeRecordsTest {
 
     @Test
     void testMixedContentMessageCreation() {
-        ImageSource imageSource = new ImageSource("base64", "image/jpeg", "imageData");
+        var imageSource = new ImageContent.ImageSource("base64", "image/jpeg", "imageData");
         Content imageContent = new ImageContent("image", imageSource);
         Content textContent = new TextContent("text", "What is in this image?");
         MixedContent message = new MixedContent("user", List.of(imageContent, textContent));

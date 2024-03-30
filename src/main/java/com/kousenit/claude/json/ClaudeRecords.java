@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class ClaudeRecords {
-    public sealed interface Message permits SimpleMessage, TextMessage, MixedContent {
-    }
-
     public record ClaudeMessageRequest(
             String model,
             @JsonProperty("system") String systemPrompt,
@@ -17,29 +14,34 @@ public class ClaudeRecords {
     ) {
     }
 
-    public sealed interface Content permits TextContent, ImageContent {
+    public sealed interface Message
+            permits SimpleMessage, TextMessage, MixedContent {
+        String role();
     }
 
-    public record SimpleMessage(String role, String content) implements Message {
+    // Message implementations:
+    public record SimpleMessage(String role, String content) implements Message { }
+
+    public record TextMessage(String role, List<TextContent> content) implements Message { }
+
+    public record MixedContent(String role, List<Content> content) implements Message { }
+
+    public sealed interface Content
+            permits TextContent, ImageContent {
+        String type();
     }
 
-    public record TextContent(String type, String text) implements Content {
-    }
-
-    public record TextMessage(String role, List<TextContent> content) implements Message {
-    }
-
-    public record ImageSource(String type,
-                              @JsonProperty("media_type") String mediaType,
-                              String data) {
-    }
+    // Content implementations:
+    public record TextContent(String type, String text) implements Content { }
 
     public record ImageContent(String type, ImageSource source) implements Content {
+        public record ImageSource(String type,
+                                  @JsonProperty("media_type") String mediaType,
+                                  String data) {
+        }
     }
 
-    public record MixedContent(String role, List<Content> content) implements Message {
-    }
-
+    // Response records:
     public record ClaudeMessageResponse(
             String id,
             String type,
@@ -47,10 +49,8 @@ public class ClaudeRecords {
             String model,
             @JsonProperty("stop_reason") String stopReason,
             @JsonProperty("stop_sequence") String stopSequence,
-            List<Content> content,
+            List<TextContent> content,
             Usage usage) {
-        public record Content(String type, String text) {
-        }
 
         public record Usage(@JsonProperty("input_tokens") int inputTokens,
                             @JsonProperty("output_tokens") int outputTokens) {
