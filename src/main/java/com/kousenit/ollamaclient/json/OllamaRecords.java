@@ -1,6 +1,6 @@
 package com.kousenit.ollamaclient.json;
 
-import com.kousenit.ollamaclient.utils.ImageUtils;
+import com.kousenit.ollamaclient.utils.FileUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +26,10 @@ public class OllamaRecords {
                                              boolean stream)
             implements OllamaGenerateRequest {
 
+        // Transform file names into base64-encoded strings
         public OllamaGenerateImageRequest {
             images = images.stream()
-                    .map(image -> isBase64Encoded(image) ? image : ImageUtils.encodeImage(image))
+                    .map(image -> isBase64Encoded(image) ? image : FileUtils.encodeImage(image))
                     .collect(Collectors.toList());
         }
 
