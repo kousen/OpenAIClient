@@ -4,6 +4,7 @@ import com.kousenit.openaiclient.json.TTSRequest;
 import com.kousenit.openaiclient.json.Voice;
 import com.kousenit.openaiclient.util.FileUtils;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -87,7 +88,7 @@ public class TextToSpeechService {
     private void validateRequest(TTSRequest ttsRequest) {
         Set<ConstraintViolation<TTSRequest>> violations = validator.validate(ttsRequest);
         if (!violations.isEmpty()) {
-            throw new IllegalArgumentException(violations.toString());
+            throw new ConstraintViolationException(violations);
         }
     }
 }

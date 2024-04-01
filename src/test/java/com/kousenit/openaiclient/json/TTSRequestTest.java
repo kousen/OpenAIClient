@@ -3,6 +3,8 @@ package com.kousenit.openaiclient.json;
 import com.kousenit.openaiclient.services.TextToSpeechService;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,7 +17,7 @@ class TTSRequestTest {
     private Validator validator;
 
     @Test
-    void testValidAudioModels() {
+    void testValidModels() {
         TTSRequest request = new TTSRequest(TextToSpeechService.TTS_1, "Hello, world", Voice.ALLOY);
         assertTrue(validator.validate(request).isEmpty());
         request = new TTSRequest(TextToSpeechService.TTS_1_HD, "Hello, world", Voice.ALLOY);
@@ -61,5 +63,13 @@ class TTSRequestTest {
         TTSRequest request = new TTSRequest("tts-1", "Hello, world".repeat(1000),
                 Voice.ALLOY, ResponseFormat.MP3, 1.0);
         assertFalse(validator.validate(request).isEmpty());
+    }
+
+    @ParameterizedTest(name = "Testing response format {0}")
+    @EnumSource(ResponseFormat.class)
+    void testResponseFormats(ResponseFormat format) {
+        TTSRequest request = new TTSRequest("tts-1", "Hello, world",
+                Voice.ALLOY, format, 1.0);
+        assertTrue(validator.validate(request).isEmpty());
     }
 }

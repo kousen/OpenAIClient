@@ -1,10 +1,12 @@
 package com.kousenit.openaiclient.json;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ResponseFormat {
-    @JsonProperty("mp3") MP3,
-    @JsonProperty("opus") OPUS,
-    @JsonProperty("aac") AAC,
-    @JsonProperty("flac") FLAC
+    MP3, OPUS, AAC, FLAC;
+
+    @JsonValue
+    public String toValue() {
+        return name().toLowerCase();
+    }
 }
