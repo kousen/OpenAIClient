@@ -1,13 +1,11 @@
 package com.kousenit.openaiclient.services;
 
-import com.kousenit.openaiclient.json.ChatRequest;
-import com.kousenit.openaiclient.json.ChatResponse;
-import com.kousenit.openaiclient.json.Message;
-import com.kousenit.openaiclient.json.ModelList;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+
+import static com.kousenit.openaiclient.json.OpenAIRecords.*;
 
 @Service
 public class MistralService {

@@ -1,4 +1,4 @@
-package com.kousenit.openaiclient.util;
+package com.kousenit.openaiclient.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

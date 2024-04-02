@@ -1,8 +1,5 @@
 package com.kousenit.openaiclient.services;
 
-import com.kousenit.openaiclient.json.Image;
-import com.kousenit.openaiclient.json.ImageRequest;
-import com.kousenit.openaiclient.json.ImageResponse;
 import com.kousenit.openaiclient.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.kousenit.openaiclient.json.OpenAIRecords.*;
 
 @Service
 public class DallEService {
@@ -30,7 +29,7 @@ public class DallEService {
     }
 
     public ImageRequest createImageRequest(String model, String prompt, int n,
-                                           String quality, String size) {
+                                                         String quality, String size) {
         return new ImageRequest(model, prompt, n, quality, size, "b64_json");
     }
 

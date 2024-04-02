@@ -1,10 +1,6 @@
 package com.kousenit.openaiclient.services;
 
-import com.kousenit.openaiclient.json.ChatRequest;
-import com.kousenit.openaiclient.json.ChatResponse;
-import com.kousenit.openaiclient.json.Message;
-import com.kousenit.openaiclient.json.ModelList;
-import com.kousenit.openaiclient.util.Role;
+import com.kousenit.openaiclient.json.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.kousenit.openaiclient.json.OpenAIRecords.*;
+
 @Service
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
     public static final String GPT4 = "gpt-4-turbo-preview";
+    public static final String GPT4V = "gpt-4-vision-preview";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
