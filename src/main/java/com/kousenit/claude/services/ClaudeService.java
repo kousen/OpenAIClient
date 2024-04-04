@@ -34,8 +34,7 @@ public class ClaudeService {
                 DEFAULT_TEMPERATURE,
                 List.of(new SimpleMessage("user", prompt))
         );
-        logger.info("Request: {}", request);
-        return claudeInterface.getMessageResponse(request).content().getFirst().text();
+        return getClaudeMessageResponse(request).content().getFirst().text();
     }
 
     public ClaudeMessageResponse getClaudeMessageResponse(ClaudeMessageRequest request) {
@@ -49,7 +48,7 @@ public class ClaudeService {
         List<Message> alternatingMessages = IntStream.range(0, messages.length)
                 .mapToObj(i -> new SimpleMessage(i % 2 == 0 ? "user" : "assistant", messages[i]))
                 .collect(Collectors.toList());
-        return getClaudeMessageResponse(
-                new ClaudeMessageRequest(model, system, 100, 0.5, alternatingMessages));
+        var request = new ClaudeMessageRequest(model, system, 100, 0.5, alternatingMessages);
+        return getClaudeMessageResponse(request);
     }
 }

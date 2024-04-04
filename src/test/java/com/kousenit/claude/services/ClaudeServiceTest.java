@@ -20,6 +20,42 @@ class ClaudeServiceTest {
     @Autowired
     private ClaudeService claudeService;
 
+    @Test
+    void simpleText() {
+        var response = claudeService.getClaudeMessageResponse(
+                "What is the capital of France?",
+                ClaudeService.CLAUDE_3_HAIKU);
+        System.out.println(response);
+        assertThat(response)
+                .isNotBlank()
+                .contains("Paris");
+    }
+
+    @Test
+    void describeImage() {
+        String imageFileName = "happy_leaping_robot.png";
+        String encodedImage = FileUtils.encodeImage(
+                "src/main/resources/images/%s".formatted(imageFileName));
+        var request = new ClaudeMessageRequest(
+                ClaudeService.CLAUDE_3_HAIKU,
+                "",
+                1024,
+                0.3,
+                List.of(new MixedContent("user",
+                        List.of(new ImageContent("image",
+                                        new ImageContent.ImageSource(
+                                                "base64", "image/png", encodedImage)),
+                                new TextContent("text", "What is in this image?")))));
+
+        ClaudeMessageResponse response = null;
+        try {
+            response = claudeService.getClaudeMessageResponse(request);
+        } catch (Exception e) {
+            logger.error("Error: {}", e.getMessage());
+        }
+        System.out.println(response);
+    }
+
     @Nested
     class CompositionTests {
         @Test
@@ -92,31 +128,6 @@ class ClaudeServiceTest {
             System.out.println(name);
             assertThat(name).contains("Francis");
         }
-    }
-
-    @Test
-    void describeImage() {
-        String imageFileName = "happy_leaping_robot.png";
-        String encodedImage = FileUtils.encodeImage(
-                "src/main/resources/images/%s".formatted(imageFileName));
-        var request = new ClaudeMessageRequest(
-                ClaudeService.CLAUDE_3_HAIKU,
-                "",
-                1024,
-                0.3,
-                List.of(new MixedContent("user",
-                        List.of(new ImageContent("image",
-                                        new ImageContent.ImageSource(
-                                                "base64", "image/png", encodedImage)),
-                                new TextContent("text", "What is in this image?")))));
-
-        ClaudeMessageResponse response = null;
-        try {
-            response = claudeService.getClaudeMessageResponse(request);
-        } catch (Exception e) {
-            logger.error("Error: {}", e.getMessage());
-        }
-        System.out.println(response);
     }
 
     @Test
