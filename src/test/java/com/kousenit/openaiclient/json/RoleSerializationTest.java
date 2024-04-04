@@ -1,8 +1,7 @@
-package com.kousenit.openaiclient.util;
+package com.kousenit.openaiclient.json;
 
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
-import com.kousenit.openaiclient.json.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @JsonTest
-class SerializeRoleTest {
+class RoleSerializationTest {
     @Autowired
     private JacksonTester<Message> jacksonTester;
 

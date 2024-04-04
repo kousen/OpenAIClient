@@ -47,18 +47,40 @@ class OpenAIServiceTest {
     }
 
     @Test
-    void getChatResponseWithRequest() {
-        ChatRequest chatRequest = new ChatRequest(OpenAIService.GPT4, 100, 0.2,
+    void getChatResponseWithSimpleText() {
+        ChatRequest chatRequest = new ChatRequest(OpenAIService.GPT4, 300, 0.2,
                 List.of(new Message(Role.USER,
-//                        new ComplexContent(List.of(
-//                                new Text("text", """
-//                                        According to Douglas Adams, what is the Ultimate Answer
-//                                        to the Ultimate Question of Life, the Universe, and Everything?"""
-//                                        .replaceAll("\n", " ")))))));
                         new SimpleTextContent("""
                                 What is the Ultimate Answer to the Ultimate Question
                                 of Life, the Universe, and Everything?"""
                                 .replaceAll("\n", " ")))));
+        System.out.println(chatRequest);
+        ChatResponse response = openAIService.getChatResponse(chatRequest);
+        System.out.println(response);
+    }
+
+    @Test
+    void getChatResponseWithComplexContent() {
+        ChatRequest chatRequest = new ChatRequest(OpenAIService.GPT4, 300, 0.2,
+                List.of(new Message(Role.USER,
+                        new ComplexContent(List.of(
+                                new Text("text", """
+                                        What is the Ultimate Answer to the Ultimate Question
+                                        of Life, the Universe, and Everything?"""
+                                        .replaceAll("\n", " ")))))));
+        System.out.println(chatRequest);
+        ChatResponse response = openAIService.getChatResponse(chatRequest);
+        System.out.println(response);
+    }
+
+    @Test
+    void getChatResponseWithImage() {
+        ChatRequest chatRequest = new ChatRequest(OpenAIService.GPT4, 300, 0.2,
+                List.of(new Message(Role.USER,
+                        new ComplexContent(List.of(
+                                new Text("text", "Describe this image:"),
+                                new ImageUrl("image_url",
+                                        new Url("src/main/resources/images/happy_leaping_robot.png")))))));
         System.out.println(chatRequest);
         ChatResponse response = openAIService.getChatResponse(chatRequest);
         System.out.println(response);
@@ -88,8 +110,12 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.model()).isEqualTo(OpenAIService.GPT4),
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
-                () -> assertThat(chatRequest.messages().getFirst().role()).isEqualTo(Role.USER),
-                () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(
+                () -> assertThat(chatRequest.messages()
+                        .getFirst()
+                        .role()).isEqualTo(Role.USER),
+                () -> assertThat(chatRequest.messages()
+                        .getFirst()
+                        .content()).isEqualTo(
                         new SimpleTextContent(prompt)));
     }
 
