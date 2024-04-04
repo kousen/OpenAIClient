@@ -9,7 +9,8 @@ import java.util.List;
 
 import static com.kousenit.openaiclient.json.OpenAIRecords.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class MistralServiceTest {
@@ -19,7 +20,7 @@ class MistralServiceTest {
     @Test
     void complete() {
         Message message = new Message(Role.USER,
-                "Who is the most renowed French painter?");
+                new SimpleTextContent("Who is the most renowed French painter?"));
         String model = MistralService.MISTRAL_SMALL_LATEST;
         ChatResponse response = service.complete(model, List.of(message));
         assertNotNull(response);

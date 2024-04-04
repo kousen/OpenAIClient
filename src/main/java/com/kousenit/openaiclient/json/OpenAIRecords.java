@@ -15,26 +15,63 @@ import java.util.List;
 
 public class OpenAIRecords {
 
-    // For chat requests and responses
-    public record ChatRequest(String model,
-                              List<Message> messages,
-                              double temperature) {}
+    // Request records
+    public record ChatRequest(
+            String model,
+            @JsonProperty("max_tokens") int maxTokens,
+            double temperature,
+            List<Message> messages
+    ) {}
 
-    public record Message(Role role, String content) {}
+    public record Message(Role role, Content content) {}
 
+    public sealed interface Content permits SimpleTextContent, ComplexContent {}
+
+    public record SimpleTextContent(String text) implements Content {
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
+    public record ComplexContent(List<ComplexContentType> contentObjects)
+            implements Content {}
+
+    public sealed interface ComplexContentType permits Text, ImageUrl {}
+
+    public record Text(String type, String text) implements ComplexContentType {
+        public Text(String text) {
+            this("text", text);
+        }
+    }
+
+    public record ImageUrl(String type,
+                           @JsonProperty("image_url") Url imageUrl)
+            implements ComplexContentType {
+        public ImageUrl(String url) {
+            this("image_url", new Url(url));
+        }
+    }
+
+    public record Url(String url) {}
+
+    // Response records
     public record ChatResponse(
             String id,
             String object,
             long created,
             String model,
             Usage usage,
-            List<Choice> choices
+            List<Choice> choices,
+            String system_fingerprint
     ) {
         @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
         public record Usage(int promptTokens, int completionTokens, int totalTokens) {}
 
         @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-        public record Choice(Message message, String finishReason, int index) {}
+        public record Choice(ResponseMessage message, String finishReason, int index) {}
+
+        public record ResponseMessage(String role, String content) {}
     }
 
     // For models
@@ -56,10 +93,6 @@ public class OpenAIRecords {
     public record Image(String b64_json) {
     }
 
-    // prompt has max length of 1000 characters
-// n defaults to 1, which happens if n is null. Otherwise must be between 1 and 10.
-// size defaults to 1024x1024. Also valid are 256x256 and 512x512
-// NOTE: response_format can be "url" or "b64_json". Default is url.
     public record ImageRequest(
             @NotBlank @Pattern(regexp = "dall-e-[23]") String model,
             @Size(max = 1000) String prompt,

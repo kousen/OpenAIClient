@@ -29,7 +29,7 @@ public class MistralService {
     }
 
     public ChatResponse complete(String model, List<Message> messages) {
-        ChatRequest request = new ChatRequest(model, messages, 0.7);
+        ChatRequest request = new ChatRequest(model, 300, 0.7, messages);
 
         return restClient.post()
                 .uri("/v1/chat/completions")

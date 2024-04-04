@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static com.kousenit.openaiclient.json.OpenAIRecords.ChatRequest;
-import static com.kousenit.openaiclient.json.OpenAIRecords.Message;
+import static com.kousenit.openaiclient.json.OpenAIRecords.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,23 +35,42 @@ class OpenAIServiceTest {
 
     @Test
     void getChatResponse() {
-        String response = openAIService.getChatResponse(OpenAIService.GPT4,
+        String response = openAIService.getChatResponse(
+                OpenAIService.GPT4,
                 List.of(new Message(Role.USER,
-                        """
+                        new SimpleTextContent("""
                                 According to Douglas Adams, what is the Ultimate Answer
-                                to the Ultimate Question of Life, the Universe, and Everything?""")),
+                                to the Ultimate Question of Life, the Universe, and Everything?"""))),
                 0.2);
         System.out.println(response);
         assertTrue(response.contains("42"));
     }
 
     @Test
+    void getChatResponseWithRequest() {
+        ChatRequest chatRequest = new ChatRequest(OpenAIService.GPT4, 100, 0.2,
+                List.of(new Message(Role.USER,
+//                        new ComplexContent(List.of(
+//                                new Text("text", """
+//                                        According to Douglas Adams, what is the Ultimate Answer
+//                                        to the Ultimate Question of Life, the Universe, and Everything?"""
+//                                        .replaceAll("\n", " ")))))));
+                        new SimpleTextContent("""
+                                What is the Ultimate Answer to the Ultimate Question
+                                of Life, the Universe, and Everything?"""
+                                .replaceAll("\n", " ")))));
+        System.out.println(chatRequest);
+        ChatResponse response = openAIService.getChatResponse(chatRequest);
+        System.out.println(response);
+    }
+
+    @Test
     void howManyRoads() {
         String response = openAIService.getChatResponse(OpenAIService.GPT4,
                 List.of(new Message(Role.USER,
-                        """
+                        new SimpleTextContent("""
                                 How many roads must a man walk down
-                                before we call him a man?""")),
+                                before we call him a man?"""))),
                 0.2);
         System.out.println(response);
         assertNotNull(response);
@@ -71,17 +89,18 @@ class OpenAIServiceTest {
                 () -> assertThat(chatRequest.temperature()).isEqualTo(0.7),
                 () -> assertThat(chatRequest.messages()).hasSize(1),
                 () -> assertThat(chatRequest.messages().getFirst().role()).isEqualTo(Role.USER),
-                () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(prompt));
+                () -> assertThat(chatRequest.messages().getFirst().content()).isEqualTo(
+                        new SimpleTextContent(prompt)));
     }
 
     @Test
     void getChatResponseWithMessage() {
         String response = openAIService.getChatResponse(
                 """
-                    According to Douglas Adams, what is the Ultimate Answer
-                    to the Ultimate Question of Life, the Universe,
-                    and Everything?""");
-        System.out.println(response);
+                        According to Douglas Adams, what is the Ultimate Answer
+                        to the Ultimate Question of Life, the Universe,
+                        and Everything?""");
+        System.out.println("Response: " + response);
         assertTrue(response.contains("42"));
     }
 }

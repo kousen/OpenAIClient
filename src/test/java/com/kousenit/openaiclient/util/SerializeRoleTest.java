@@ -24,7 +24,7 @@ class SerializeRoleTest {
     @ParameterizedTest(name = "Serializing {index} => {0}")
     @EnumSource(Role.class)
     void serializeRole(Role role) throws IOException {
-        Message message = new Message(role, "Hello, world!");
+        Message message = new Message(role, new SimpleTextContent("Hello, world!"));
         String json = jacksonTester.write(message).getJson();
         System.out.println(json);
         assertThat(json).contains(role.name().toLowerCase());
@@ -45,13 +45,14 @@ class SerializeRoleTest {
         assertAll(
                 () -> assertNotNull(message),
                 () -> assertEquals(Role.USER, message.role()),
-                () -> assertEquals("Hello, world!", message.content())
+                () -> assertEquals(new SimpleTextContent("Hello, world!"), message.content())
         );
     }
 
     @Test
     void testRecordSerialization() throws IOException {
-        Message message = new Message(Role.USER, "Hello, world!");
+        Message message = new Message(Role.USER,
+                new SimpleTextContent("Hello, world!"));
         String serializedRequest = jacksonTester.write(message).getJson();
         System.out.println(serializedRequest);
         Message deserializedRequest = jacksonTester.parseObject(serializedRequest);
