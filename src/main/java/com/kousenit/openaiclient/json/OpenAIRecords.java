@@ -62,7 +62,7 @@ public class OpenAIRecords {
 // NOTE: response_format can be "url" or "b64_json". Default is url.
     public record ImageRequest(
             @NotBlank @Pattern(regexp = "dall-e-[23]") String model,
-            @Size(max = 1000) String prompt,
+            @Size(max = 4096) String prompt,
             int n,          // must be 1 for DALL-E-3
             String quality, // "standard" or "hd" for DALL-E-3
             String size,    // 1024x1024 or higher for DALL-E-3

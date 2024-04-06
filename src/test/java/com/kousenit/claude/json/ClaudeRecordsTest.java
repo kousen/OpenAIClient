@@ -13,7 +13,7 @@ public class ClaudeRecordsTest {
 
     @Test
     void testSimpleMessageCreation() {
-        var message = new ClaudeRecords.SimpleMessage("user", "Hello, Claude");
+        var message = new SimpleMessage("user", "Hello, Claude");
         assertEquals("user", message.role());
         assertEquals("Hello, Claude", message.content());
     }
@@ -23,10 +23,12 @@ public class ClaudeRecordsTest {
         TextContent content = new TextContent("text", "Hello, Claude");
         TextMessage message = new TextMessage("user", List.of(content));
 
-        assertEquals("user", message.role());
-        assertFalse(message.content().isEmpty());
-        assertEquals("text", message.content().getFirst().type());
-        assertEquals("Hello, Claude", message.content().getFirst().text());
+        assertAll(() -> {
+            assertEquals("user", message.role());
+            assertFalse(message.content().isEmpty());
+            assertEquals("text", message.content().getFirst().type());
+            assertEquals("Hello, Claude", message.content().getFirst().text());
+        });
     }
 
     @Test
@@ -36,9 +38,11 @@ public class ClaudeRecordsTest {
         Content textContent = new TextContent("text", "What is in this image?");
         MixedContent message = new MixedContent("user", List.of(imageContent, textContent));
 
-        assertEquals("user", message.role());
-        assertEquals(2, message.content().size());
-        assertInstanceOf(ImageContent.class, message.content().get(0));
-        assertInstanceOf(TextContent.class, message.content().get(1));
+        assertAll(() -> {
+            assertEquals("user", message.role());
+            assertFalse(message.content().isEmpty());
+            assertInstanceOf(ImageContent.class, message.content().get(0));
+            assertInstanceOf(TextContent.class, message.content().get(1));
+        });
     }
 }

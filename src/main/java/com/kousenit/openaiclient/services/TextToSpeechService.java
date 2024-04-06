@@ -20,8 +20,8 @@ import java.util.Set;
 
 @Service
 public class TextToSpeechService {
-    public final static String TTS_1 = "tts-1-1106";
-    public final static String TTS_1_HD = "tts-1-hd-1106";
+    public final static String TTS_1 = "tts-1";
+    public final static String TTS_1_HD = "tts-1-hd";
 
     private static final Voice DEFAULT_VOICE = Voice.ALLOY;
     private static final String DEFAULT_MODEL = TTS_1;

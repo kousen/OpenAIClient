@@ -23,7 +23,7 @@ class ClaudeServiceTest {
     @Nested
     class CompositionTests {
         @Test
-        void haikuTest_haiku () {
+        void haikuTest_haiku() {
             String question = """
                     Write a haiku about Java development
                     with AI tools.
@@ -35,7 +35,7 @@ class ClaudeServiceTest {
         }
 
         @Test
-        void sonnetTest_sonnet () {
+        void sonnetTest_sonnet() {
             String question = """
                     Write a sonnet about Java development
                     with AI tools.
@@ -47,7 +47,7 @@ class ClaudeServiceTest {
         }
 
         @Test
-        void opusTest_opus () {
+        void opusTest_opus() {
             String question = """
                     Write an opus about Java development
                     with AI tools.
@@ -94,29 +94,60 @@ class ClaudeServiceTest {
         }
     }
 
-    @Test
-    void describeImage() {
-        String imageFileName = "happy_leaping_robot.png";
-        String encodedImage = FileUtils.encodeImage(
-                "src/main/resources/images/%s".formatted(imageFileName));
-        var request = new ClaudeMessageRequest(
-                ClaudeService.CLAUDE_3_HAIKU,
-                "",
-                1024,
-                0.3,
-                List.of(new MixedContent("user",
-                        List.of(new ImageContent("image",
-                                        new ImageContent.ImageSource(
-                                                "base64", "image/png", encodedImage)),
-                                new TextContent("text", "What is in this image?")))));
+    @Nested
+    class BasicTests {
 
-        ClaudeMessageResponse response = null;
-        try {
-            response = claudeService.getClaudeMessageResponse(request);
-        } catch (Exception e) {
-            logger.error("Error: {}", e.getMessage());
+        @Test
+        void simpleMessage() {
+            var request = new ClaudeMessageRequest(
+                    ClaudeService.CLAUDE_3_HAIKU,
+                    "",
+                    1024,
+                    0.3,
+                    List.of(new SimpleMessage("user", "What is the capital of France?")));
+            var response = claudeService.getClaudeMessageResponse(request);
+            System.out.println(response);
+            assertThat(response.content().getFirst().text()).contains("Paris");
         }
-        System.out.println(response);
+
+        @Test
+        void textMessage() {
+            var request = new ClaudeMessageRequest(
+                    ClaudeService.CLAUDE_3_HAIKU,
+                    "",
+                    1024,
+                    0.3,
+                    List.of(new TextMessage("user",
+                            List.of(new TextContent("text", "What is the capital of France?")))));
+            var response = claudeService.getClaudeMessageResponse(request);
+            System.out.println(response);
+            assertThat(response.content().getFirst().text()).contains("Paris");
+        }
+
+        @Test
+        void mixedContentMessage() {
+            String imageFileName = "happy_leaping_robot.png";
+            String encodedImage = FileUtils.encodeImage(
+                    "src/main/resources/images/%s".formatted(imageFileName));
+            var request = new ClaudeMessageRequest(
+                    ClaudeService.CLAUDE_3_HAIKU,
+                    "",
+                    1024,
+                    0.3,
+                    List.of(new MixedContent("user",
+                            List.of(new ImageContent("image",
+                                            new ImageContent.ImageSource(
+                                                    "base64", "image/png", encodedImage)),
+                                    new TextContent("text", "What is in this image?")))));
+
+            ClaudeMessageResponse response = null;
+            try {
+                response = claudeService.getClaudeMessageResponse(request);
+            } catch (Exception e) {
+                logger.error("Error: {}", e.getMessage());
+            }
+            System.out.println(response);
+        }
     }
 
     @Test

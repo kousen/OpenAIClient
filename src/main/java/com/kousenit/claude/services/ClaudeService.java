@@ -34,8 +34,7 @@ public class ClaudeService {
                 DEFAULT_TEMPERATURE,
                 List.of(new SimpleMessage("user", prompt))
         );
-        logger.info("Request: {}", request);
-        return claudeInterface.getMessageResponse(request).content().getFirst().text();
+        return getClaudeMessageResponse(request).content().getFirst().text();
     }
 
     public ClaudeMessageResponse getClaudeMessageResponse(ClaudeMessageRequest request) {

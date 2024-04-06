@@ -14,7 +14,7 @@ import static com.kousenit.openaiclient.json.OpenAIRecords.*;
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
     public static final String GPT4 = "gpt-4-turbo-preview";
-    public static final String GPT4V = "gpt-4-vision-preview";
+    // public static final String GPT4V = "gpt-4-vision-preview";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 

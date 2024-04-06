@@ -10,6 +10,18 @@ public record TTSRequest(
         @JsonProperty("response_format") ResponseFormat responseFormat,
         @DecimalMin("0.25") @DecimalMax("4.0") double speed
 ) {
+    public TTSRequest {
+        if (model == null) {
+            model = "tts-1";
+        }
+        if (responseFormat == null) {
+            responseFormat = ResponseFormat.MP3;
+        }
+        if (speed < 0.25 || speed > 4.0) {
+            throw new IllegalArgumentException("Speed must be between 0.25 and 4.0");
+        }
+    }
+
     public TTSRequest(String model, String input, Voice voice) {
         this(model, input, voice, ResponseFormat.MP3, 1.0);
     }
