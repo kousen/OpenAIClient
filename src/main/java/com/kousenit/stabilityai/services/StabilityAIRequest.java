@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -43,13 +42,11 @@ public class StabilityAIRequest {
             Path filePath = Paths.get("src/main/resources/images", fileName);
             System.out.println("Attempting to write to: " + filePath.toAbsolutePath());
 
-            // Ensure directory exists
-            if (Files.notExists(filePath.getParent())) {
-                Files.createDirectories(filePath.getParent());
-            }
-
-            response = client.send(request, HttpResponse.BodyHandlers.ofFileDownload(
-                    filePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING));
+            response = client.send(request, HttpResponse.BodyHandlers.ofFile(
+                    filePath,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
 
             if (response.statusCode() == 200) {
                 System.out.println(filePath.toAbsolutePath() + " downloaded successfully.");
