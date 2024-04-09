@@ -30,7 +30,7 @@ class DallEServiceTest {
     @Test
     void downloadDallE3ImagesFromPromptAndNumber() {
         dallEService.downloadImagesFromPromptAndNumber(
-                DallEService.DALL_E_3, DEFAULT_IMAGE_PROMPT, 1);
+                DallEService.DALL_E_3, "Cats playing gin rummy", 1);
     }
 
     @Test

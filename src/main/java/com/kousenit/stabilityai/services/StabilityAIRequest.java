@@ -18,7 +18,7 @@ public class StabilityAIRequest {
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.stability.ai/v2beta/stable-image/generate/core"))
-                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Authorization", "Bearer %s".formatted(API_KEY))
                     .header("Accept", "image/*")
                     .header("Content-Type", "multipart/form-data; boundary=myBoundary")
                     .POST(HttpRequest.BodyPublishers.ofString("""
