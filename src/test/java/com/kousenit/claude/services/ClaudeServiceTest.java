@@ -15,7 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class ClaudeServiceTest {
-    public static final Logger logger = LoggerFactory.getLogger(ClaudeServiceTest.class);
+    public static final Logger logger =
+            LoggerFactory.getLogger(ClaudeServiceTest.class);
 
     @Autowired
     private ClaudeService claudeService;
