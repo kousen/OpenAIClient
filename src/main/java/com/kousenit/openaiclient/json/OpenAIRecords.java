@@ -16,11 +16,14 @@ import java.util.List;
 public class OpenAIRecords {
 
     // For chat requests and responses
-    public record ChatRequest(String model,
-                              List<Message> messages,
-                              double temperature) {}
+    public record ChatRequest(
+            String model,
+            List<Message> messages,
+            double temperature) {
+    }
 
-    public record Message(Role role, String content) {}
+    public record Message(Role role, String content) {
+    }
 
     public record ChatResponse(
             String id,
@@ -31,10 +34,18 @@ public class OpenAIRecords {
             List<Choice> choices
     ) {
         @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-        public record Usage(int promptTokens, int completionTokens, int totalTokens) {}
+        public record Usage(
+                int promptTokens,
+                int completionTokens,
+                int totalTokens) {
+        }
 
         @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-        public record Choice(Message message, String finishReason, int index) {}
+        public record Choice(
+                Message message,
+                String finishReason,
+                int index) {
+        }
     }
 
     // For models
@@ -71,8 +82,9 @@ public class OpenAIRecords {
         }
     }
 
-    public record ImageResponse(Long created,
-                                List<Image> data) {
+    public record ImageResponse(
+            Long created,
+            List<Image> data) {
     }
 
 }

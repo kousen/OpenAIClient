@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 
 public record TTSRequest(
-        @Pattern(regexp = "tts-1(-hd)?(-1106)?") String model,
+        @Pattern(regexp = "tts-1(-hd)?") String model,
         @NotBlank @Size(max = 4096) String input,
         Voice voice,
         @JsonProperty("response_format") ResponseFormat responseFormat,

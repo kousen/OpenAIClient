@@ -23,7 +23,7 @@ public class MistralController {
         var response = service.complete(MistralService.MISTRAL_SMALL_LATEST,
                 List.of(new OpenAIRecords.Message(Role.USER, question)));
         System.out.println(response);
-        return response.choices().get(0).message().content();
+        return response.choices().getFirst().message().content();
     }
 
     public record Question(String question) {}
