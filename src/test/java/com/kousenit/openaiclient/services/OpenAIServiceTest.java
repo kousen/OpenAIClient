@@ -3,7 +3,9 @@ package com.kousenit.openaiclient.services;
 import com.kousenit.openaiclient.json.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 
 import java.util.List;
 
@@ -83,5 +85,22 @@ class OpenAIServiceTest {
                     and Everything?""");
         System.out.println(response);
         assertTrue(response.contains("42"));
+    }
+
+    @Test
+    void transcribeAudioFromResource(
+            @Value("classpath:audio/AssertJExceptions.wav") Resource wavFile) {
+        String response = openAIService.getTranscription(wavFile);
+        assertNotNull(response);
+        assertThat(response).contains("AssertJ");
+        System.out.println(response);
+    }
+
+    @Test
+    void transcribeAudioFromLongerFile(@Value("classpath:audio/EarningsCall.wav") Resource wavFile) {
+        String transcription = openAIService.getTranscription(wavFile);
+        assertThat(transcription)
+                .isNotBlank()
+                .hasLineCount(3);
     }
 }

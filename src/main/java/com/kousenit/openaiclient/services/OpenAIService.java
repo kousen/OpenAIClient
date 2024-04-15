@@ -1,11 +1,17 @@
 package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.Role;
+import com.kousenit.openaiclient.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.kousenit.openaiclient.json.OpenAIRecords.*;
@@ -18,15 +24,33 @@ public class OpenAIService {
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
+    public static final String WORD_LIST = String.join(", ",
+            List.of("Kousen", "GPT-3", "GPT-4", "DALL-E",
+                    "Midjourney", "AssertJ", "Mockito", "JUnit", "Java", "Kotlin", "Groovy", "Scala",
+                    "IOException", "RuntimeException", "UncheckedIOException",
+                    "UnsupportedAudioFileException", "assertThrows", "assertTrue", "assertEquals",
+                    "assertNull", "assertNotNull", "assertThat", "Tales from the jar side", "Spring Boot",
+                    "Spring Framework", "Spring Data", "Spring Security"));
+
+    @Value("${whisper.model}")
+    private String WHISPER_MODEL;
+
+    @Value("${whisper.max_allowed_size_bytes}")
+    public int MAX_ALLOWED_SIZE;
+
+    private final WavFileSplitter splitter;
+
     private final OpenAIInterface openAIInterface;
 
     @Autowired
-    public OpenAIService(OpenAIInterface openAIInterface) {
+    public OpenAIService(OpenAIInterface openAIInterface, WavFileSplitter splitter) {
         this.openAIInterface = openAIInterface;
+        this.splitter = splitter;
     }
 
     public List<String> getModelNames() {
-        return openAIInterface.listModels().data().stream()
+        return openAIInterface.listModels()
+                .data().stream()
                 .map(ModelList.Model::id)
                 .sorted()
                 .toList();
@@ -51,5 +75,49 @@ public class OpenAIService {
         return new ChatRequest(OpenAIService.GPT4,
                 List.of(new Message(Role.USER, prompt)),
                 0.7);
+    }
+
+    @SuppressWarnings("LoggingSimilarMessage")
+    public String getTranscription(Resource audioResource) {
+        if (!audioResource.isFile()) {
+            throw new UnsupportedOperationException("Resource must be a file");
+        }
+
+        // Collect the transcriptions of each chunk into a list
+        List<String> transcriptions = new ArrayList<>();
+
+        // First prompt is the word list
+        String prompt = WORD_LIST;
+        try {
+            long length = audioResource.getFile().length();
+            if (length <= MAX_ALLOWED_SIZE) {
+                logger.info("Transcribing {}", audioResource.getFilename());
+                String transcription = openAIInterface.getTranscriptionResponse(
+                        audioResource, WHISPER_MODEL, WORD_LIST, "text");
+                transcriptions = List.of(transcription);
+            } else {
+                List<Resource> chunks = splitter.splitWavResourceIntoChunks(audioResource);
+                for (Resource chunk : chunks) {
+                    // subsequent prompts are the previous transcriptions
+                    logger.info("Transcribing {}", chunk.getFilename());
+                    String transcription = openAIInterface.getTranscriptionResponse(
+                            chunk, WHISPER_MODEL, prompt, "text");
+                    transcriptions.add(transcription);
+                    prompt = transcription;
+                }
+            }
+        } catch (IOException | UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Join the individual transcripts and write to a file
+        String transcription = String.join(" ", transcriptions);
+        String fileName = audioResource.getFilename();
+        assert fileName != null;
+        String fileNameWithoutPath = fileName.substring(
+                fileName.lastIndexOf("/") + 1);
+        FileUtils.writeTextToFile(transcription,
+                fileNameWithoutPath.replace(".wav", ".txt"));
+        return transcription;
     }
 }

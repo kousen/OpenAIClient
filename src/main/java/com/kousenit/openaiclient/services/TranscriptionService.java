@@ -4,16 +4,15 @@ import com.kousenit.openaiclient.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,28 +41,30 @@ public class TranscriptionService {
     @Value("${whisper.model}")
     private String WHISPER_MODEL;
 
-    private final WebClient webClient;
+    private final RestClient restClient;
     private final WavFileSplitter splitter;
 
     @Autowired
-    public TranscriptionService(WebClient webClient, WavFileSplitter splitter) {
-        this.webClient = webClient;
+    public TranscriptionService(@Qualifier("openAIRestClient") RestClient restClient, WavFileSplitter splitter) {
+        this.restClient = restClient;
         this.splitter = splitter;
     }
 
     public ResponseEntity<String> transcribeAudio(String filename, String prompt) throws IOException {
         File file = new File(filename);
-        ByteArrayResource audioResource = new ByteArrayResource(Files.readAllBytes(file.toPath())) {
+        var audioResource = new ByteArrayResource(Files.readAllBytes(file.toPath())) {
             @Override
             public String getFilename() {
                 return file.getName();
             }
         };
-        BodyInserters.FormInserter<Object> formData =
-                BodyInserters.fromMultipartData("file", audioResource)
-                        .with("model", WHISPER_MODEL)
-                        .with("prompt", prompt)
-                        .with("response_format", "text");
+
+        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
+        formData.add("file", audioResource);
+        formData.add("model", WHISPER_MODEL);
+        formData.add("prompt", prompt);
+        formData.add("response_format", "text");
+
         return transcribeAudioImpl(formData);
     }
 
@@ -91,18 +92,12 @@ public class TranscriptionService {
     }
 
 
-    private ResponseEntity<String> transcribeAudioImpl(BodyInserters.FormInserter<Object> formData) {
-        return webClient.post()
+    private ResponseEntity<String> transcribeAudioImpl(MultiValueMap<String, Object> formData) {
+        return restClient.post()
                 .uri("/v1/audio/transcriptions")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(formData)
                 .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> clientResponse.bodyToMono(String.class)
-                        .flatMap(errorMessage -> {
-                            System.err.println("Error: " + errorMessage);
-                            return Mono.error(new RuntimeException("Request failed: " + errorMessage));
-                        }))
-                .toEntity(String.class).block();
+                .toEntity(String.class);
     }
 
     public String transcribeAudioFile(String fileName) throws IOException {

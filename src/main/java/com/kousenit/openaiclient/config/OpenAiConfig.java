@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -24,6 +25,17 @@ public class OpenAiConfig {
                 .codecs(configurer -> configurer.defaultCodecs()
                         .maxInMemorySize((int) maxAllowedSize.toBytes()))
                 .baseUrl(baseUrl)
+                .build();
+    }
+
+    @Bean
+    public RestClient openAIRestClient(@Value("${openai.baseurl}") String baseUrl,
+                                       @Value("${OPENAI_API_KEY}") String apiKey) {
+        return RestClient.builder()
+                .baseUrl(baseUrl)
+                .defaultHeader("Authorization", "Bearer %s".formatted(apiKey))
+                .defaultHeader("Accept", "application/json")
+                .defaultHeader("Content-Type", "multipart/form-data")
                 .build();
     }
 

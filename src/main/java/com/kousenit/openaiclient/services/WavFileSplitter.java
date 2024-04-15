@@ -1,6 +1,8 @@
 package com.kousenit.openaiclient.services;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.sound.sampled.*;
@@ -14,6 +16,51 @@ import java.util.List;
 public class WavFileSplitter {
     @Value("${whisper.max_chunk_size_bytes}")
     public int MAX_CHUNK_SIZE_BYTES;
+
+    public List<Resource> splitWavResourceIntoChunks(Resource sourceResource)
+            throws IOException, UnsupportedAudioFileException {
+        List<Resource> chunks = new ArrayList<>();
+        int chunkCounter = 1;
+
+        // Ensure the source resource exists and is readable
+        if (!sourceResource.exists()) {
+            throw new IllegalArgumentException("Source resource not found");
+        }
+
+        // Convert Resource to File (if possible) or handle as InputStream
+        File sourceFile = sourceResource.getFile(); // This line can throw IOException if the resource cannot be resolved to a file
+
+        try (AudioInputStream inputStream = AudioSystem.getAudioInputStream(sourceFile)) {
+            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(sourceFile);
+            AudioFormat format = fileFormat.getFormat();
+            long totalFrames = inputStream.getFrameLength();
+            int frameSize = format.getFrameSize();
+            long framesPerChunk = MAX_CHUNK_SIZE_BYTES / frameSize;
+
+            byte[] buffer = new byte[(int) (framesPerChunk * frameSize)];
+
+            while (totalFrames > 0) {
+                long framesToRead = Math.min(totalFrames, framesPerChunk);
+                int bytesRead = inputStream.read(buffer, 0, (int) (framesToRead * frameSize));
+                if (bytesRead > 0) {
+                    // Create a temporary file for the chunk
+                    File chunkFile = File.createTempFile("chunk-" + chunkCounter, ".wav");
+                    try (AudioInputStream partStream = new AudioInputStream(
+                            new ByteArrayInputStream(buffer, 0, bytesRead), format, framesToRead)) {
+                        AudioSystem.write(partStream, AudioFileFormat.Type.WAVE, chunkFile);
+                    }
+
+                    // Convert File to Resource
+                    Resource chunkResource = new FileSystemResource(chunkFile);
+                    chunks.add(chunkResource);
+                    chunkCounter++;
+                }
+                totalFrames -= framesToRead;
+            }
+        }
+
+        return chunks;
+    }
 
     public List<File> splitWavFileIntoChunks(File sourceWavFile) {
         List<File> chunks = new ArrayList<>();
