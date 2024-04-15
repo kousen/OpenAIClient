@@ -28,7 +28,7 @@ public class WavFileSplitter {
         }
 
         // Convert Resource to File (if possible) or handle as InputStream
-        File sourceFile = sourceResource.getFile(); // This line can throw IOException if the resource cannot be resolved to a file
+        File sourceFile = sourceResource.getFile();
 
         try (AudioInputStream inputStream = AudioSystem.getAudioInputStream(sourceFile)) {
             AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(sourceFile);

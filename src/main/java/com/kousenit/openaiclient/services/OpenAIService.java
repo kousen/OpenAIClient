@@ -77,7 +77,6 @@ public class OpenAIService {
                 0.7);
     }
 
-    @SuppressWarnings("LoggingSimilarMessage")
     public String getTranscription(Resource audioResource) {
         if (!audioResource.isFile()) {
             throw new UnsupportedOperationException("Resource must be a file");
@@ -98,8 +97,11 @@ public class OpenAIService {
             } else {
                 List<Resource> chunks = splitter.splitWavResourceIntoChunks(audioResource);
                 for (Resource chunk : chunks) {
+                    int chunkIndex = chunks.indexOf(chunk) + 1;
+                    logger.info("Transcribing chunk {} of {}: {}",
+                            chunkIndex, chunks.size(), chunk.getFilename());
+
                     // subsequent prompts are the previous transcriptions
-                    logger.info("Transcribing {}", chunk.getFilename());
                     String transcription = openAIInterface.getTranscriptionResponse(
                             chunk, WHISPER_MODEL, prompt, "text");
                     transcriptions.add(transcription);
