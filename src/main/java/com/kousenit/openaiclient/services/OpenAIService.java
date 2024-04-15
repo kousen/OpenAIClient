@@ -106,6 +106,13 @@ public class OpenAIService {
                             chunk, WHISPER_MODEL, prompt, "text");
                     transcriptions.add(transcription);
                     prompt = transcription;
+
+                    // Ensure deletion of chunk file
+                    if (chunk.getFile().delete()) {
+                        logger.info("Successfully deleted chunk file: {}", chunk.getFilename());
+                    } else {
+                        logger.error("Failed to delete chunk file: {}", chunk.getFilename());
+                    }
                 }
             }
         } catch (IOException | UnsupportedAudioFileException e) {
