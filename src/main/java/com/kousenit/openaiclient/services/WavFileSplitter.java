@@ -45,7 +45,7 @@ public class WavFileSplitter {
                 if (bytesRead > 0) {
                     // Create a temporary file for the chunk
                     File chunkFile = File.createTempFile("chunk-" + chunkCounter, ".wav");
-                    try (AudioInputStream partStream = new AudioInputStream(
+                    try (var partStream = new AudioInputStream(
                             new ByteArrayInputStream(buffer, 0, bytesRead), format, framesToRead)) {
                         AudioSystem.write(partStream, AudioFileFormat.Type.WAVE, chunkFile);
                     }
