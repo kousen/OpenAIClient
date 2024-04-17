@@ -1,6 +1,6 @@
 package com.kousenit.openaiclient.services;
 
-import com.kousenit.openaiclient.json.*;
+import com.kousenit.openaiclient.json.TTSRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,4 +41,11 @@ public interface OpenAIInterface {
             contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
     String getTranscriptionResponse(@RequestPart Resource file, @RequestPart String model,
                                     @RequestPart String prompt, @RequestPart String response_format);
+
+    // Speech-to-Text (translation)
+    @PostExchange(value = "/audio/translations",
+            accept = MediaType.TEXT_PLAIN_VALUE,
+            contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
+    String getTranslationResponse(@RequestPart Resource file, @RequestPart String model,
+                                  @RequestPart String prompt, @RequestPart String response_format);
 }

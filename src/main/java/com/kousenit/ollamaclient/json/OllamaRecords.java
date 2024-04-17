@@ -10,9 +10,7 @@ public class OllamaRecords {
     public sealed interface OllamaGenerateRequest
             permits OllamaGenerateTextRequest, OllamaGenerateImageRequest {
         String model();
-
         String prompt();
-
         boolean stream();
     }
 

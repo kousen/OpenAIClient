@@ -103,4 +103,13 @@ class OpenAIServiceTest {
                 .isNotBlank()
                 .hasLineCount(3);
     }
+
+    @Test
+    void translateeAudioFromResource(
+            @Value("classpath:audio/OSR_in_000_0062_16k.wav") Resource wavFile) {
+        String response = openAIService.getTranslation(wavFile);
+        assertNotNull(response);
+        System.out.println(response);
+    }
+
 }

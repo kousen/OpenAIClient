@@ -36,7 +36,8 @@ class OllamaServiceTest {
 
     @Test
     void conversation() {
-        var response = service.conversation("Why is the sky blue?",
+        var response = service.conversation("llama2",
+                "Why is the sky blue?",
                 "Because of Rayleigh scattering.",
                 "How is that different from Mie scattering?");
         assertFalse(response.isBlank());
