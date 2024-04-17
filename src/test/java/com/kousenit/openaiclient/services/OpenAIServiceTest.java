@@ -1,6 +1,7 @@
 package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.Role;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,12 +105,47 @@ class OpenAIServiceTest {
                 .hasLineCount(3);
     }
 
-    @Test
-    void translateeAudioFromResource(
-            @Value("classpath:audio/OSR_in_000_0062_16k.wav") Resource wavFile) {
-        String response = openAIService.getTranslation(wavFile);
-        assertNotNull(response);
-        System.out.println(response);
+    @Nested
+    class TranslationsTests {
+        @Test
+        void translateAudioFromResource_chinese(
+                @Value("classpath:audio/Kousen 录音.m4a") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
+
+        @Test
+        void translateAudioFromResource_italian(
+                @Value("classpath:audio/csw14_17_leciaramelle_64kb.mp3") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
+
+        @Test
+        void translateAudioFromResource_swedish(
+                @Value("classpath:audio/csw14_08_tomten_64kb.mp3") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
+
+        @Test
+        void translateAudioFromResource_bulgarian(
+                @Value("classpath:audio/csw14_27_koledendar_64kb.mp3") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
+
+        @Test
+        void translateAudioFromResource_french(
+                @Value("classpath:audio/csw14_23_lacharlotte_64kb.mp3") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
     }
 
 }

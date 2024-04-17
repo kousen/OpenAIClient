@@ -121,18 +121,25 @@ public class OpenAIService {
 
         // Join the individual transcripts and write to a file
         String transcription = String.join(" ", transcriptions);
-        String fileName = audioResource.getFilename();
-        assert fileName != null;
-        String fileNameWithoutPath = fileName.substring(
-                fileName.lastIndexOf("/") + 1);
-        FileUtils.writeTextToFile(transcription,
-                fileNameWithoutPath.replace(".wav", ".txt"));
-        return transcription;
+        return saveResultsToFile(audioResource, transcription);
     }
 
     public String getTranslation(Resource audioResource) {
         logger.info("Translating {}", audioResource.getFilename());
-        return openAIInterface.getTranslationResponse(
+        String translation = openAIInterface.getTranslationResponse(
                 audioResource, WHISPER_MODEL, "", "text");
+        return saveResultsToFile(audioResource, translation);
+    }
+
+    private String saveResultsToFile(Resource audioResource, String transcription) {
+        String fileName = audioResource.getFilename();
+        assert fileName != null;
+        String fileNameWithoutPath = fileName.substring(
+                fileName.lastIndexOf("/") + 1);
+        String extension = fileNameWithoutPath.substring(
+                fileNameWithoutPath.lastIndexOf("."));
+        FileUtils.writeTextToFile(transcription,
+                fileNameWithoutPath.replace(extension, ".txt"));
+        return transcription;
     }
 }
