@@ -14,6 +14,7 @@ public class FileUtils {
     public static final String TEXT_DIRECTORY = "src/main/resources/text";
     public static final String IMAGE_DIRECTORY = "src/main/resources/images";
     public static final String AUDIO_DIRECTORY = "src/main/resources/audio";
+    public static final String VIDEO_DIRECTORY = "src/main/resources/video";
 
     private static int counter;
 
@@ -76,4 +77,32 @@ public class FileUtils {
     }
 
 
+    public static void writeVideoBytesToFile(String video) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String fileName = String.format("video_%s.mp4", timestamp);
+        Path directory = Paths.get(VIDEO_DIRECTORY);
+        Path filePath = directory.resolve(fileName);
+        try {
+            Files.createDirectories(directory);
+            byte[] bytes = Base64.getDecoder().decode(video);
+            Files.write(filePath, bytes, StandardOpenOption.CREATE_NEW);
+            System.out.printf("Saved %s to %s%n", fileName, IMAGE_DIRECTORY);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error writing video to file", e);
+        }
+    }
+
+    public static void writeResponseDataToFile(String string) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String fileName = String.format("response_%s.txt", timestamp);
+        Path directory = Paths.get(TEXT_DIRECTORY);
+        Path filePath = directory.resolve(fileName);
+        try {
+            Files.createDirectories(directory);
+            Files.writeString(filePath, string, StandardOpenOption.CREATE_NEW);
+            System.out.printf("Saved %s to %s%n", fileName, TEXT_DIRECTORY);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error writing response data to file", e);
+        }
+    }
 }
