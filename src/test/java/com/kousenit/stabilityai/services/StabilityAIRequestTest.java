@@ -11,8 +11,8 @@ class StabilityAIRequestTest {
     void requestStableImage() {
         try {
             stabilityAI.requestStableImage("""
-                            a photorealistic image of a happy robot jumping on springs,
-                            thrilled that he accomplished a hard task""");
+                            cats playing gin rummy
+                            """);
         } catch (Exception e) {
             fail(e.getMessage());
         }

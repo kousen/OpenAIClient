@@ -46,6 +46,21 @@ public class FileUtils {
         }
     }
 
+    public static boolean writeImageBytesToFile(byte[] bytes) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String fileName = String.format("image_%s_%d.png", timestamp, counter++);
+        Path directory = Paths.get(IMAGE_DIRECTORY);
+        Path filePath = directory.resolve(fileName);
+        try {
+            Files.createDirectories(directory);
+            Files.write(filePath, bytes, StandardOpenOption.CREATE_NEW);
+            System.out.printf("Saved %s to %s%n", fileName, IMAGE_DIRECTORY);
+            return true;
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error writing image to file", e);
+        }
+    }
+
     public static String writeSoundBytesToFile(byte[] bytes) {
         String timestamp = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
