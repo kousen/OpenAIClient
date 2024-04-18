@@ -15,7 +15,10 @@ public class StabilityAiService {
     public byte[] requestStabilityAiImage(String prompt) {
         byte[] bytes = stabilityAiInterface.requestStableImage(
                 prompt, "sd3", "1:1", "png");
-        FileUtils.writeImageBytesToFile(bytes);
+        boolean success = FileUtils.writeImageBytesToFile(bytes);
+        if (!success) {
+            throw new RuntimeException("Failed to write image to file");
+        }
         return bytes;
     }
 }
