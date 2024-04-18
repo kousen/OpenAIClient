@@ -146,6 +146,14 @@ class OpenAIServiceTest {
             assertNotNull(response);
             System.out.println(response);
         }
+
+        @Test
+        void translateAudioFromResource_spanish(
+                @Value("classpath:audio/Paraguay.ogg") Resource wavFile) {
+            String response = openAIService.getTranslation(wavFile);
+            assertNotNull(response);
+            System.out.println(response);
+        }
     }
 
 }
