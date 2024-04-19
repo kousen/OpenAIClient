@@ -36,12 +36,13 @@ public class StabilityAiService {
     }
 
     public String requestImageToVideo(Resource image) {
-        return stabilityAiInterface.requestImageToVideo(image,
-                1.8, 127).id();
+        return stabilityAiInterface.requestImageToVideo(
+                image, 1.8, 127).id();
     }
 
     public void checkVideoStatus(String videoId) {
-        ResponseEntity<VideoResponse> videoStatusResponse = stabilityAiInterface.getVideoStatus(videoId);
+        ResponseEntity<VideoResponse> videoStatusResponse =
+                stabilityAiInterface.getVideoStatus(videoId);
         if (videoStatusResponse.getStatusCode().is2xxSuccessful()) {
             logger.info("Video status: {}", videoStatusResponse.getBody());
             VideoResponse videoResponse = videoStatusResponse.getBody();
@@ -52,7 +53,7 @@ public class StabilityAiService {
                         FileUtils.writeVideoBytesToFile(completed.video());
                     }
                     case VideoInProgress progress -> {
-                        logger.info("Video still processing. Checking again in 10 seconds.");
+                        logger.info("Status: {}. Checking again in 10 seconds.", progress.status());
                         taskScheduler.schedule(() -> checkVideoStatus(videoId),
                                 Instant.now().plusSeconds(10));
                     }

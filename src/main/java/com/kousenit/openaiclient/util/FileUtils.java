@@ -86,7 +86,7 @@ public class FileUtils {
             Files.createDirectories(directory);
             byte[] bytes = Base64.getDecoder().decode(video);
             Files.write(filePath, bytes, StandardOpenOption.CREATE_NEW);
-            System.out.printf("Saved %s to %s%n", fileName, IMAGE_DIRECTORY);
+            System.out.printf("Saved %s to %s%n", fileName, VIDEO_DIRECTORY);
         } catch (IOException e) {
             throw new UncheckedIOException("Error writing video to file", e);
         }

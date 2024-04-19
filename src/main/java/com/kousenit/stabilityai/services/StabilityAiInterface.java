@@ -28,7 +28,7 @@ public interface StabilityAiInterface {
             contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
     VideoId requestImageToVideo(@RequestPart Resource image,
                                 @RequestPart double cfg_scale,
-                                @RequestPart int motion_bucket_id);
+                                @RequestPart long motion_bucket_id);
 
     @GetExchange(value = "/image-to-video/result/{id}",
             accept = MediaType.APPLICATION_JSON_VALUE)
