@@ -21,7 +21,7 @@ class OllamaServiceTest {
 
     @Test
     void chat() {
-        var response = service.chat(OllamaService.LLAMA2,
+        var response = service.chat(OllamaService.LLAMA3,
                 "Why is the sky blue?");
         assertFalse(response.isBlank());
         System.out.println(response);
@@ -36,7 +36,7 @@ class OllamaServiceTest {
 
     @Test
     void conversation() {
-        var response = service.conversation("llama2",
+        var response = service.conversation("llama3",
                 "Why is the sky blue?",
                 "Because of Rayleigh scattering.",
                 "How is that different from Mie scattering?");
@@ -45,7 +45,7 @@ class OllamaServiceTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {OllamaService.ORCA_MINI, OllamaService.LLAMA2, OllamaService.GEMMA})
+    @ValueSource(strings = {OllamaService.ORCA_MINI, OllamaService.LLAMA3, OllamaService.GEMMA})
     void generateWithText(String model) {
         var textRequest = new OllamaGenerateTextRequest(
                 model,

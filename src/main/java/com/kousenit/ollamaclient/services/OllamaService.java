@@ -14,7 +14,7 @@ public class OllamaService {
     public static final String LLAVA = "llava";
     public static final String BAKLLAVA = "bakllava";
     public static final String ORCA_MINI = "orca-mini";
-    public static final String LLAMA2 = "llama2";
+    public static final String LLAMA3 = "llama3";
     public static final String GEMMA = "gemma";
 
     private final OllamaInterface ollamaInterface;

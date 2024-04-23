@@ -9,8 +9,8 @@ import static com.kousenit.ollamaclient.json.OllamaRecords.*;
 @HttpExchange("/api")
 public interface OllamaInterface {
 
-    @PostExchange("/chat")
-    OllamaChatResponse chat(@RequestBody OllamaChatRequest question);
+    @PostExchange("/generate")
+    OllamaGenerateResponse generate(@RequestBody OllamaGenerateRequest question);
 
 //    @PostExchange("/generate")
 //    OllamaGenerateResponse generate(@RequestBody OllamaGenerateTextRequest question);
@@ -18,6 +18,7 @@ public interface OllamaInterface {
 //    @PostExchange("/generate")
 //    OllamaGenerateResponse generate(@RequestBody OllamaGenerateImageRequest question);
 
-    @PostExchange("/generate")
-    OllamaGenerateResponse generate(@RequestBody OllamaGenerateRequest question);
+
+    @PostExchange("/chat")
+    OllamaChatResponse chat(@RequestBody OllamaChatRequest question);
 }

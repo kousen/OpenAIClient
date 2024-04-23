@@ -41,7 +41,7 @@ class OllamaInterfaceTest {
     }
 
     @ParameterizedTest(name = "model = {0}")
-    @ValueSource(strings = {"orca-mini", "llama2", "gemma"})
+    @ValueSource(strings = {"orca-mini", "llama3", "gemma"})
     void multipleModels(String model) {
         var request = new OllamaGenerateTextRequest(model,
                 "Why is the sky blue?",
