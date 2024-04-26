@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.kousenit.stabilityai.json.StabilityAiRecords;
 import com.kousenit.stabilityai.json.VideoResponseDeserializer;
-import com.kousenit.stabilityai.util.LoggingInterceptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -24,7 +23,7 @@ public class StabilityAiConfig {
                                             @Value("${STABILITY_API_KEY}") String apiKey) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
-                .requestInterceptor(new LoggingInterceptor())
+                //.requestInterceptor(new LoggingInterceptor())
                 .defaultHeader("Authorization", "Bearer %s".formatted(apiKey))
                 .build();
     }

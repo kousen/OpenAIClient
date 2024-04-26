@@ -19,8 +19,7 @@ class MistralServiceTest {
     @Test
     void complete() {
         Message message = new Message(Role.USER,
-                //"Who is the most renowed French painter?");
-                "Who is the most renowed French football player?");
+                "Who is the most renowed French painter?");
         String model = MistralService.MISTRAL_SMALL_LATEST;
         ChatResponse response = service.complete(model, List.of(message));
         assertNotNull(response);
