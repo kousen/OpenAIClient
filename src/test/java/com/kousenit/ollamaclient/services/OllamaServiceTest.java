@@ -20,6 +20,13 @@ class OllamaServiceTest {
     private OllamaService service;
 
     @Test
+    void getModels() {
+        var models = service.getModels();
+        models.forEach(System.out::println);
+    }
+
+
+    @Test
     void chat() {
         var response = service.chat(OllamaService.LLAMA3,
                 "Why is the sky blue?");
@@ -58,15 +65,17 @@ class OllamaServiceTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {OllamaService.LLAVA, OllamaService.BAKLLAVA})
-    void generateWithImage(String model) {
+    @ValueSource(strings = {OllamaService.LLAVA, OllamaService.LLAVA_LLAMA3,
+            OllamaService.LLAVA_PHI3, OllamaService.BAKLLAVA})
+    void describeImage(String model) {
         var imageRequest = new OllamaGenerateImageRequest(
                 model,
                 "What is in this image?",
-                List.of("src/main/resources/images/happy_leaping_robot.png"),
+                List.of("src/main/resources/images/cats_playing_cards.png"),
                 false);
         var response = service.generate(imageRequest);
         assertFalse(response.isBlank());
         System.out.println(response);
     }
+
 }

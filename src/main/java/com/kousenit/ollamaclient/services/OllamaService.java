@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.kousenit.ollamaclient.json.OllamaRecords.*;
+import static com.kousenit.ollamaclient.json.OllamaRecords.ModelList.OllamaModel;
 
 @Service
 public class OllamaService {
     public static final String DEFAULT_MODEL = "orca-mini";
     public static final String LLAVA = "llava";
+    public static final String LLAVA_LLAMA3 = "llava-llama3";
+    public static final String LLAVA_PHI3 = "llava-phi3";
     public static final String BAKLLAVA = "bakllava";
     public static final String ORCA_MINI = "orca-mini";
     public static final String LLAMA3 = "llama3";
@@ -21,6 +24,10 @@ public class OllamaService {
 
     public OllamaService(OllamaInterface ollamaInterface) {
         this.ollamaInterface = ollamaInterface;
+    }
+
+    public List<OllamaModel> getModels() {
+        return ollamaInterface.getModels().models();
     }
 
     public String chat(String model, String question) {

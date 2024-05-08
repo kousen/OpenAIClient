@@ -1,6 +1,7 @@
 package com.kousenit.ollamaclient.services;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -8,6 +9,9 @@ import static com.kousenit.ollamaclient.json.OllamaRecords.*;
 
 @HttpExchange("/api")
 public interface OllamaInterface {
+
+    @GetExchange("/tags")
+    ModelList getModels();
 
     @PostExchange("/generate")
     OllamaGenerateResponse generate(@RequestBody OllamaGenerateRequest question);

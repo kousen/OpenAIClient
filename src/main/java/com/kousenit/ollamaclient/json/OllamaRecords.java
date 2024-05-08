@@ -2,11 +2,33 @@ package com.kousenit.ollamaclient.json;
 
 import com.kousenit.ollamaclient.utils.FileUtils;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class OllamaRecords {
 
+    // Response from listing the local models
+    public record ModelList(List<OllamaModel> models) {
+
+        public record OllamaModel(
+                String name,
+                OffsetDateTime modifiedAt,
+                long size,
+                String digest,
+                Details details
+        ) {}
+
+        public record Details(
+                String format,
+                String family,
+                List<String> families, // This can be null, so it's represented as a list that might be empty or null
+                String parameterSize,
+                String quantizationLevel
+        ) {}
+    }
+
+    // Records to generate text or images
     public sealed interface OllamaGenerateRequest
             permits OllamaGenerateTextRequest, OllamaGenerateImageRequest {
         String model();
