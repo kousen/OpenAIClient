@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -56,8 +55,9 @@ public class OpenAIRecords {
             @Override
             public String toString() {
                 return "Model{id='%s', created=%s, ownedBy='%s'}".formatted(
-                        id, LocalDateTime.ofInstant(
-                                Instant.ofEpochSecond(created), ZoneId.systemDefault()),
+                        id, Instant.ofEpochSecond(created)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime(),
                         ownedBy);
             }
         }

@@ -99,6 +99,19 @@ class ClaudeServiceTest {
     class BasicTests {
 
         @Test
+        void hello_world_in_klingon() {
+            ClaudeMessageResponse response = claudeService.getClaudeMessageResponse(
+                    new ClaudeMessageRequest(
+                            ClaudeService.CLAUDE_3_HAIKU,
+                            "",
+                            1024,
+                            0.3,
+                            List.of(new SimpleMessage("user", "Hello, Dolly"))
+                    ));
+            System.out.println(response);
+        }
+
+        @Test
         void simpleMessage() {
             var request = new ClaudeMessageRequest(
                     ClaudeService.CLAUDE_3_HAIKU,

@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.kousenit.openaiclient.json.OpenAIRecords.ChatRequest;
 import static com.kousenit.openaiclient.json.OpenAIRecords.Message;
+import static com.kousenit.openaiclient.json.OpenAIRecords.ModelList.Model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +22,13 @@ class OpenAIServiceTest {
     private OpenAIService openAIService;
 
     @Test
-    void getGPTModels() {
+    void getModels() {
+        List<Model> models = openAIService.getModels();
+        models.forEach(System.out::println);
+    }
+
+    @Test
+    void getGPTModelNames() {
         List<String> modelNames = openAIService.getModelNames();
         assertThat(modelNames)
                 .anyMatch(name -> name.contains(OpenAIService.GPT35))

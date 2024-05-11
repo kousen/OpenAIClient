@@ -1,0 +1,201 @@
+package com.kousenit.gemini;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import static com.kousenit.gemini.GeminiRecords.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+class GeminiServiceTest {
+    @Autowired
+    private GeminiService service;
+
+    @Test
+    void getCompletion_HHGtTG_question() {
+        String text = service.getCompletion("""
+            What is the Ultimate Answer to
+            the Ultimate Question of Life, the Universe,
+            and Everything?
+            """);
+        assertNotNull(text);
+        System.out.println(text);
+        assertThat(text).contains("42");
+    }
+
+    @Test
+    void getCompletion() {
+        String text = service.getCompletion("""
+            How many roads must a man walk down
+            before you can call him a man?
+            """);
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+    @Test
+    void pirateCoverLetter() {
+        String text = service.getCompletion("""
+            Please write a cover letter for a Java developer
+            applying for an AI position, written in pirate speak.
+            """);
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+
+    @Test
+    void writeAStory() {
+        String text = service.getCompletion("Write a story about a magic backpack.");
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+    @Test
+    void describeAnImage() throws Exception {
+        String text = service.getCompletionWithImage(
+                "Describe this image",
+                "A_cheerful_robot.png");
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+    @Test
+    void countItems_gemini_pro() throws Exception {
+        String text = service.getCompletionWithImage(
+                """
+                This is a picture from the food pantry. It contains
+                shelves labeled "canned goods", "snacks", and
+                "menstrual care". On the shelf labeled "canned goods",
+                how many cans of food are there?
+                """,
+                "foodnstuff_picture.png");
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+    @Test
+    void countItems_gemini_1_5() throws Exception {
+        String text = service.analyzeImage(
+                """
+                This is a picture from the food pantry. It contains
+                shelves labeled "canned goods", "snacks", and
+                "menstrual care". On the shelf labeled "canned goods",
+                how many cans of food are there?
+                """,
+                "foodnstuff_picture.png");
+        assertNotNull(text);
+        System.out.println(text);
+    }
+
+    @Test
+    void getModels() {
+        ModelList models = service.getModels();
+        assertNotNull(models);
+        models.models().stream()
+                .map(Model::name)
+                .filter(name -> name.contains("gemini"))
+                .forEach(System.out::println);
+    }
+
+    @Test
+    void getCompletionWith15Pro() throws Exception {
+        String hybhy = PDFTextExtractor.extractText(
+                "src/main/resources/pdfs/help-your-boss-help-you_P1.0.pdf");
+
+        String prompt = """
+            Here is the text from the book "Help Your Boss Help You":
+            
+            %s
+            
+            Answer the following question based on information
+            contained in the book:
+            
+            %s
+            """.formatted(hybhy, "What are the top five major points made in the book?");
+
+        GeminiResponse response = service.getCompletionWithModel(
+                GeminiService.GEMINI_1_5_PRO,
+                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+        System.out.println(response);
+        String text = response.candidates().getFirst().content().parts().getFirst().text();
+        assertNotNull(text);
+        System.out.println(text);
+        System.out.println("Input Tokens : " + service.countTokens(prompt));
+        System.out.println("Output Tokens: " + service.countTokens(text));
+    }
+
+    @Test
+    void countTokens_fullRequest() {
+        var request = new GeminiRequest(
+                List.of(new Content(
+                        List.of(new TextPart("What is the airspeed velocity of an unladen swallow?")))));
+        GeminiCountResponse response = service.countTokens(GeminiService.GEMINI_PRO, request);
+        assertNotNull(response);
+        System.out.println(response);
+        assertThat(response.totalTokens()).isEqualTo(12);
+    }
+
+    @ParameterizedTest(name = "countBookTokens({0})")
+    @ValueSource(strings = {
+            "pg135_les_miserables.txt",
+            "pg1661_adventures_of_sherlock_holmes.txt",
+            "pg25717_fall_of_roman_empire.txt"
+    })
+    void countBookTokens(String fileName) throws IOException {
+        // Load the file from the classpath
+        try (InputStream inputStream =
+                     getClass().getClassLoader().getResourceAsStream("text/books/" + fileName)) {
+            assert inputStream != null;
+            String book = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            int totalTokens = service.countTokens(book);
+            System.out.println(totalTokens);
+        }
+    }
+
+
+    @ParameterizedTest(name = "summarize({0})")
+    @ValueSource(strings = {
+            "pg135_les_miserables.txt",
+            "pg1661_adventures_of_sherlock_holmes.txt",
+            "pg25717_fall_of_roman_empire.txt"
+    })
+    void summarizePlot(String fileName) throws IOException {
+        try (InputStream inputStream =
+                     getClass().getClassLoader()
+                             .getResourceAsStream("text/books/" + fileName)) {
+            assert inputStream != null;
+            String book = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            String prompt = """
+                    Summarize the plot of the book:
+                    
+                    %s
+                    """.formatted(book);
+            GeminiResponse response = service.getCompletionWithModel(
+                    GeminiService.GEMINI_1_5_PRO,
+                    new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+            System.out.println(response);
+            String summary = response.candidates().getFirst().content().parts().getFirst().text();
+            assertNotNull(summary);
+        }
+    }
+
+
+    @Test
+    void countBookTokensHYBHY() throws Exception {
+        String hybhy = PDFTextExtractor.extractText(
+                "src/main/resources/pdfs/help-your-boss-help-you_P1.0.pdf");
+        int totalTokens = service.countTokens(hybhy);
+        System.out.println(totalTokens);
+    }
+
+}

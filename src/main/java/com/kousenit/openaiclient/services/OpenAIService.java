@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.kousenit.openaiclient.json.OpenAIRecords.*;
+import static com.kousenit.openaiclient.json.OpenAIRecords.ModelList.*;
 
 @Service
 public class OpenAIService {
@@ -48,10 +50,17 @@ public class OpenAIService {
         this.splitter = splitter;
     }
 
+    public List<Model> getModels() {
+        return openAIInterface.listModels()
+                .data().stream()
+                .sorted(Comparator.comparing(Model::id))
+                .toList();
+    }
+
     public List<String> getModelNames() {
         return openAIInterface.listModels()
                 .data().stream()
-                .map(ModelList.Model::id)
+                .map(Model::id)
                 .sorted()
                 .toList();
     }

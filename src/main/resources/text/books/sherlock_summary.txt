@@ -1,0 +1,26 @@
+GeminiResponse[candidates=[Candidate[content=Content[parts=[TextPart[text=The Adventures of Sherlock Holmes is a collection of twelve short stories featuring the brilliant detective Sherlock Holmes and his loyal companion, Dr. Watson. Each story presents a unique mystery that Holmes unravels using his extraordinary powers of observation, deduction, and logic. Here's a brief summary of each story:
+
+* **A Scandal in Bohemia:** The King of Bohemia seeks Holmes' help to retrieve a compromising photograph from Irene Adler, a former opera singer and adventuress, who threatens to use it to ruin his upcoming marriage.
+
+* **The Red-Headed League:** Mr. Jabez Wilson, a pawnbroker with strikingly red hair, consults Holmes after being abruptly dismissed from a highly paid, seemingly pointless job offered only to red-headed men.
+
+* **A Case of Identity:**  Miss Mary Sutherland, a young woman with a generous income, seeks Holmes' help after her fiancé, Mr. Hosmer Angel, disappears on their wedding day.
+
+* **The Boscombe Valley Mystery:**  Holmes and Watson travel to Herefordshire to investigate the murder of Mr. Charles McCarthy, whose son, James, is the prime suspect.
+
+* **The Five Orange Pips:**  John Openshaw inherits a mysterious legacy from his uncle, who had fled America in fear. The legacy includes cryptic warnings in the form of five dried orange pips.
+
+* **The Man with the Twisted Lip:** Isa Whitney, addicted to opium, disappears in a London opium den. Watson finds him there, but also discovers Holmes in disguise, leading to a baffling case of a missing businessman.
+
+* **The Adventure of the Blue Carbuncle:** A valuable blue gemstone is stolen from the Countess of Morcar. The investigation leads Holmes to a stolen goose and a series of increasingly bizarre events.
+
+* **The Adventure of the Speckled Band:** Helen Stoner fears for her life after the mysterious death of her twin sister, Julia, in their isolated home with their eccentric stepfather, Dr. Grimesby Roylott.
+
+* **The Adventure of the Engineer's Thumb:** Victor Hatherley, a hydraulic engineer, is hired for a strange nighttime job that turns violent, leaving him with a severed thumb and a chilling mystery to solve.
+
+* **The Adventure of the Noble Bachelor:** Lord Robert St. Simon's American bride disappears on their wedding day. Holmes unravels a tangled web of relationships and secrets to find the truth.
+
+* **The Adventure of the Beryl Coronet:** A valuable coronet is entrusted to the care of banker Alexander Holder.  The coronet is damaged, and his son, Arthur, is accused of stealing missing gemstones.
+
+* **The Adventure of the Copper Beeches:** Violet Hunter, a governess, accepts a well-paid position at the Copper Beeches estate with peculiar requirements, leading to a unsettling discovery and a desperate rescue.
+]], role=model], finishReason=STOP, index=0, safetyRatings=[SafetyRating[category=HARM_CATEGORY_SEXUALLY_EXPLICIT, probability=LOW], SafetyRating[category=HARM_CATEGORY_HATE_SPEECH, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_HARASSMENT, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_DANGEROUS_CONTENT, probability=NEGLIGIBLE]]]], promptFeedback=null]

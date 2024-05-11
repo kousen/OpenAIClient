@@ -25,6 +25,15 @@ dependencies {
     // JLayer for MP3 support
     implementation("com.github.umjammer:jlayer:1.0.2")
 
+    // Jsoup for web scraping
+    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.apache.tika:tika-core:2.9.1")
+    implementation("org.apache.tika:tika-parsers-standard-package:2.9.1")
+
+    // Make security warnings go away
+    implementation("org.apache.commons:commons-compress:1.26.1")
+    implementation("org.apache.james:apache-mime4j-core:0.8.11")
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     implementation("io.netty:netty-resolver-dns-native-macos:4.1.101.Final") {
