@@ -2,7 +2,7 @@ package com.kousenit.gemini;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -145,17 +145,16 @@ class GeminiServiceTest {
         assertThat(response.totalTokens()).isEqualTo(12);
     }
 
-    @ParameterizedTest(name = "countBookTokens({0})")
-    @ValueSource(strings = {
-            "pg135_les_miserables.txt",
-            "pg1661_adventures_of_sherlock_holmes.txt",
-            "pg25717_fall_of_roman_empire.txt"
-    })
+    @ParameterizedTest(name = "tokens({0})")
+    @CsvFileSource(resources = "/books.csv", numLinesToSkip = 1)
     void countBookTokens(String fileName) throws IOException {
         // Load the file from the classpath
         try (InputStream inputStream =
                      getClass().getClassLoader().getResourceAsStream("text/books/" + fileName)) {
-            assert inputStream != null;
+            System.out.println("Reading " + fileName);
+            if (inputStream == null) {
+                throw new IOException("Could not read file " + fileName);
+            }
             String book = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             int totalTokens = service.countTokens(book);
             System.out.println(totalTokens);
@@ -164,28 +163,32 @@ class GeminiServiceTest {
 
 
     @ParameterizedTest(name = "summarize({0})")
-    @ValueSource(strings = {
-            "pg135_les_miserables.txt",
-            "pg1661_adventures_of_sherlock_holmes.txt",
-            "pg25717_fall_of_roman_empire.txt"
-    })
-    void summarizePlot(String fileName) throws IOException {
+    @CsvFileSource(resources = "/books.csv", numLinesToSkip = 1)
+    void summarizePlot(String fileName, int tokens) throws IOException {
+        if (tokens > 1_500_000) {
+            System.out.printf("Skipping %s with %d tokens%n", fileName, tokens);
+            return;
+        }
         try (InputStream inputStream =
                      getClass().getClassLoader()
                              .getResourceAsStream("text/books/" + fileName)) {
-            assert inputStream != null;
+            if (inputStream == null) {
+                throw new IOException("Could not read file " + fileName);
+            }
             String book = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println(book.length() + " characters");
             String prompt = """
                     Summarize the plot of the book:
                     
                     %s
+                    
+                    Explain why it might wind up on a
+                    Banned Books list.
                     """.formatted(book);
             GeminiResponse response = service.getCompletionWithModel(
                     GeminiService.GEMINI_1_5_PRO,
                     new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
             System.out.println(response);
-            String summary = response.candidates().getFirst().content().parts().getFirst().text();
-            assertNotNull(summary);
         }
     }
 
