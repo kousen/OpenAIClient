@@ -1,26 +1,28 @@
-GeminiResponse[candidates=[Candidate[content=Content[parts=[TextPart[text=The Adventures of Sherlock Holmes is a collection of twelve short stories featuring the brilliant detective Sherlock Holmes and his loyal companion, Dr. Watson. Each story presents a unique mystery that Holmes unravels using his extraordinary powers of observation, deduction, and logic. Here's a brief summary of each story:
+GeminiResponse[candidates=[Candidate[content=Content[parts=[TextPart[text=This book is simply a collection of short stories featuring the detective Sherlock Holmes and would be highly unlikely to end up on a Banned Books list. The stories contain no material that would normally be considered controversial or objectionable. They are generally considered appropriate for most ages.
 
-* **A Scandal in Bohemia:** The King of Bohemia seeks Holmes' help to retrieve a compromising photograph from Irene Adler, a former opera singer and adventuress, who threatens to use it to ruin his upcoming marriage.
+Here's a brief summary of the plots for each of the stories in "The Adventures of Sherlock Holmes":
 
-* **The Red-Headed League:** Mr. Jabez Wilson, a pawnbroker with strikingly red hair, consults Holmes after being abruptly dismissed from a highly paid, seemingly pointless job offered only to red-headed men.
+**1. A Scandal in Bohemia:**  The King of Bohemia hires Holmes to retrieve a compromising photograph from Irene Adler, a former lover. Holmes is outsmarted by Irene's wit and quick thinking.
 
-* **A Case of Identity:**  Miss Mary Sutherland, a young woman with a generous income, seeks Holmes' help after her fiancé, Mr. Hosmer Angel, disappears on their wedding day.
+**2. The Red-Headed League:** A pawnbroker with bright red hair is hired for a strange, high-paying job that abruptly ends. Holmes discovers it's all a ploy to distract the pawnbroker while criminals tunnel into a bank vault.
 
-* **The Boscombe Valley Mystery:**  Holmes and Watson travel to Herefordshire to investigate the murder of Mr. Charles McCarthy, whose son, James, is the prime suspect.
+**3. A Case of Identity:** A young woman's fiancé mysteriously disappears on their wedding day. Holmes reveals that the missing man was her stepfather in disguise, aiming to keep her fortune for himself.
 
-* **The Five Orange Pips:**  John Openshaw inherits a mysterious legacy from his uncle, who had fled America in fear. The legacy includes cryptic warnings in the form of five dried orange pips.
+**4. The Boscombe Valley Mystery:** A young man is accused of murdering his father. Holmes investigates and uncovers a past crime and a secret love affair that reveal the true killer.
 
-* **The Man with the Twisted Lip:** Isa Whitney, addicted to opium, disappears in a London opium den. Watson finds him there, but also discovers Holmes in disguise, leading to a baffling case of a missing businessman.
+**5. The Five Orange Pips:** A man receives threatening letters containing five orange pips.  Holmes discovers the letters are a warning from the Ku Klux Klan and races to save the man's life, but is ultimately unsuccessful.
 
-* **The Adventure of the Blue Carbuncle:** A valuable blue gemstone is stolen from the Countess of Morcar. The investigation leads Holmes to a stolen goose and a series of increasingly bizarre events.
+**6. The Man with the Twisted Lip:**  A man disappears from an opium den. Holmes, undercover in the den, discovers the missing man is actually a successful professional beggar hiding his true identity from his family.
 
-* **The Adventure of the Speckled Band:** Helen Stoner fears for her life after the mysterious death of her twin sister, Julia, in their isolated home with their eccentric stepfather, Dr. Grimesby Roylott.
+**7. The Adventure of the Blue Carbuncle:** A precious gem is stolen, and a plumber is wrongly accused. Holmes follows a trail of clues, starting with a goose and a hat, to find the real thief and recover the jewel.
 
-* **The Adventure of the Engineer's Thumb:** Victor Hatherley, a hydraulic engineer, is hired for a strange nighttime job that turns violent, leaving him with a severed thumb and a chilling mystery to solve.
+**8. The Adventure of the Speckled Band:** A woman fears for her life after her sister dies mysteriously in a locked room. Holmes discovers the culprit is their stepfather, who uses a venomous snake to kill his stepdaughters and inherit their fortune.
 
-* **The Adventure of the Noble Bachelor:** Lord Robert St. Simon's American bride disappears on their wedding day. Holmes unravels a tangled web of relationships and secrets to find the truth.
+**9. The Adventure of the Engineer’s Thumb:** A hydraulic engineer is hired for a strange job and nearly killed by a dangerous machine. He escapes with the help of a mysterious woman, and Holmes deduces that the criminals are coiners who destroy their operation before they can be caught.
 
-* **The Adventure of the Beryl Coronet:** A valuable coronet is entrusted to the care of banker Alexander Holder.  The coronet is damaged, and his son, Arthur, is accused of stealing missing gemstones.
+**10. The Adventure of the Noble Bachelor:**  A bride disappears from her wedding breakfast. Holmes unravels the mystery, revealing that the bride had run off to reunite with her first husband, whom she believed to be dead.
 
-* **The Adventure of the Copper Beeches:** Violet Hunter, a governess, accepts a well-paid position at the Copper Beeches estate with peculiar requirements, leading to a unsettling discovery and a desperate rescue.
+**11. The Adventure of the Beryl Coronet:** A valuable coronet is stolen from a banker's home, and his son is accused. Holmes investigates and discovers the real thief is the banker's niece, who is in love with a dangerous criminal.
+
+**12. The Adventure of the Copper Beeches:** A governess takes a job with a high salary and unusual conditions. Holmes uncovers a plot involving a hidden prisoner and a dangerous mastiff. The governess helps rescue the prisoner, who turns out to be her employer's daughter.
 ]], role=model], finishReason=STOP, index=0, safetyRatings=[SafetyRating[category=HARM_CATEGORY_SEXUALLY_EXPLICIT, probability=LOW], SafetyRating[category=HARM_CATEGORY_HATE_SPEECH, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_HARASSMENT, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_DANGEROUS_CONTENT, probability=NEGLIGIBLE]]]], promptFeedback=null]

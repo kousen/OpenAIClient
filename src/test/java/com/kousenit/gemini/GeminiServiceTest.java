@@ -161,7 +161,6 @@ class GeminiServiceTest {
         }
     }
 
-
     @ParameterizedTest(name = "summarize({0})")
     @CsvFileSource(resources = "/books.csv", numLinesToSkip = 1)
     void summarizePlot(String fileName, int tokens) throws IOException {
