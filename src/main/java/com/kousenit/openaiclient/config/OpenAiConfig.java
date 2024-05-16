@@ -16,10 +16,12 @@ import java.time.temporal.ChronoUnit;
 
 @Configuration
 public class OpenAiConfig {
+
     @Bean
     public WebClient openAIWebClient(@Value("${openai.baseurl}") String baseUrl,
                                      @Value("${OPENAI_API_KEY}") String apiKey,
-                                     @Value("${whisper.max_allowed_size_bytes}") DataSize maxAllowedSize) {
+                                     @Value("${whisper.max_allowed_size}") DataSize maxAllowedSize) {
+
         return WebClient.builder()
                 .defaultHeader("Authorization", "Bearer %s".formatted(apiKey))
                 .codecs(configurer -> configurer.defaultCodecs()

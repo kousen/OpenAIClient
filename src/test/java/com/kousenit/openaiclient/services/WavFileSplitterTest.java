@@ -19,7 +19,7 @@ class WavFileSplitterTest {
     @Autowired
     private WavFileSplitter splitter;
 
-    @Value("${whisper.max_allowed_size_bytes}")
+    @Value("${whisper.max_allowed_size}")
     public int MAX_ALLOWED_SIZE;
 
     @Test

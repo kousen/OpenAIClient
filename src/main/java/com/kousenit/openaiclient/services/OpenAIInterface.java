@@ -24,6 +24,13 @@ public interface OpenAIInterface {
             contentType = MediaType.APPLICATION_JSON_VALUE)
     ChatResponse getChatResponse(@RequestBody ChatRequest chatRequest);
 
+
+    // Vision
+    @PostExchange(value = "/chat/completions",
+            accept = MediaType.APPLICATION_JSON_VALUE,
+            contentType = MediaType.APPLICATION_JSON_VALUE)
+    ChatResponse getVisionResponse(@RequestBody VisionService.ChatRequest visionRequest);
+
     // Images
     @PostExchange(value = "/images/generations",
             accept = MediaType.APPLICATION_JSON_VALUE,

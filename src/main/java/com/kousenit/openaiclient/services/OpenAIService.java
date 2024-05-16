@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.unit.DataSize;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import static com.kousenit.openaiclient.json.OpenAIRecords.ModelList.*;
 public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
     public static final String GPT4 = "gpt-4-turbo";
-    // public static final String GPT4V = "gpt-4-vision-preview";
+    public static final String GPT4O = "gpt-4o";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 
@@ -37,17 +38,18 @@ public class OpenAIService {
     @Value("${whisper.model}")
     private String WHISPER_MODEL;
 
-    @Value("${whisper.max_allowed_size_bytes}")
-    public int MAX_ALLOWED_SIZE;
+    public int maxAllowedSize;
 
     private final WavFileSplitter splitter;
 
     private final OpenAIInterface openAIInterface;
 
     @Autowired
-    public OpenAIService(OpenAIInterface openAIInterface, WavFileSplitter splitter) {
+    public OpenAIService(OpenAIInterface openAIInterface, WavFileSplitter splitter,
+                         @Value("${whisper.max-allowed-size}") DataSize maxAllowedSize) {
         this.openAIInterface = openAIInterface;
         this.splitter = splitter;
+        this.maxAllowedSize = (int) maxAllowedSize.toBytes();
     }
 
     public List<Model> getModels() {
@@ -98,7 +100,7 @@ public class OpenAIService {
         String prompt = WORD_LIST;
         try {
             long length = audioResource.getFile().length();
-            if (length <= MAX_ALLOWED_SIZE) {
+            if (length <= maxAllowedSize) {
                 logger.info("Transcribing {}", audioResource.getFilename());
                 String transcription = openAIInterface.getTranscriptionResponse(
                         audioResource, WHISPER_MODEL, WORD_LIST, "text");

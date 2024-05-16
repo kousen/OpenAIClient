@@ -46,7 +46,7 @@ class OpenAIServiceTest {
 
     @Test
     void getChatResponse() {
-        String response = openAIService.getChatResponse(OpenAIService.GPT4,
+        String response = openAIService.getChatResponse(OpenAIService.GPT4O,
                 List.of(new Message(Role.USER,
                         """
                                 According to Douglas Adams, what is the Ultimate Answer

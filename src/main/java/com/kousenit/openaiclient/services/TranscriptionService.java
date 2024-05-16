@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.client.RestClient;
 
 import java.io.File;
@@ -26,7 +27,6 @@ import java.util.List;
 @Service
 public class TranscriptionService {
 
-    @Value("${whisper.max_allowed_size_bytes}")
     public int MAX_ALLOWED_SIZE;
 
     private final Logger logger = LoggerFactory.getLogger(TranscriptionService.class);
@@ -45,9 +45,11 @@ public class TranscriptionService {
     private final WavFileSplitter splitter;
 
     @Autowired
-    public TranscriptionService(@Qualifier("openAIRestClient") RestClient restClient, WavFileSplitter splitter) {
+    public TranscriptionService(@Qualifier("openAIRestClient") RestClient restClient, WavFileSplitter splitter,
+                                @Value("${whisper.max-allowed-size}") DataSize maxAllowedSize) {
         this.restClient = restClient;
         this.splitter = splitter;
+        this.MAX_ALLOWED_SIZE = (int) maxAllowedSize.toBytes();
     }
 
     public ResponseEntity<String> transcribeAudio(String filename, String prompt) throws IOException {
