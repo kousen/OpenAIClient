@@ -99,7 +99,6 @@ public class VisionService {
                 .defaultHeader("Accept", "application/json")
                 .build();
 
-        //language=JSON
         String payload = """
                  {
                   "model": "gpt-4o",
