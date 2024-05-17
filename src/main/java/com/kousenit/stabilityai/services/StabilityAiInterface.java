@@ -18,10 +18,11 @@ public interface StabilityAiInterface {
     @PostExchange(value = "/stable-image/generate/sd3",
             accept = "image/*",
             contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
-    byte[] requestStableImage(@RequestPart String prompt,
-                              @RequestPart String model,
-                              @RequestPart String aspect_ratio,
-                              @RequestPart String output_format);
+    byte[] requestStableImage(
+            @RequestPart String prompt,
+            @RequestPart String model,
+            @RequestPart String aspect_ratio,
+            @RequestPart String output_format);
 
     @PostExchange(value = "/image-to-video",
             accept = MediaType.APPLICATION_JSON_VALUE,

@@ -13,10 +13,11 @@ import java.io.IOException;
 
 public class ImageResizer {
 
-    public static void resizeImage(String inputImagePath,
-                                   String outputImagePath,
-                                   int scaledWidth,
-                                   int scaledHeight) throws IOException {
+    public static void resizeImage(
+            String inputImagePath,
+            String outputImagePath,
+            int scaledWidth,
+            int scaledHeight) throws IOException {
         File inputFile = new File(inputImagePath);
         BufferedImage inputImage = ImageIO.read(inputFile);
         BufferedImage outputImage = resize(inputImage, scaledWidth, scaledHeight);

@@ -28,8 +28,9 @@ public class DallEService {
         this.openAIInterface = openAIInterface;
     }
 
-    public ImageRequest createImageRequest(String model, String prompt, int n,
-                                                         String quality, String size) {
+    public ImageRequest createImageRequest(
+            String model, String prompt, int n,
+            String quality, String size) {
         return new ImageRequest(model, prompt, n, quality, size, "b64_json");
     }
 
@@ -47,7 +48,8 @@ public class DallEService {
         ImageRequest imageRequest = createImageRequest(model, prompt, numberOfImages,
                 "standard", DEFAULT_IMAGE_SIZE);
         ImageResponse imageResponse = getImageResponse(imageRequest);
-        List<Boolean> results = imageResponse.data().stream()
+        List<Boolean> results = imageResponse.data()
+                .stream()
                 .map(Image::b64_json)
                 .map(FileUtils::writeImageToFile)
                 .toList();

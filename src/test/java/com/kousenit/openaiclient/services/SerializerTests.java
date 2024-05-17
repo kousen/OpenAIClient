@@ -20,7 +20,8 @@ public class SerializerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public sealed interface UnifiedMessage permits SimpleMessage, ComplexMessage {}
+    public sealed interface UnifiedMessage
+            permits SimpleMessage, ComplexMessage {}
     public record SimpleMessage(Role role, String content) implements UnifiedMessage {}
     public record ComplexMessage(Role role, List<Content> content) implements UnifiedMessage {}
 
@@ -106,7 +107,8 @@ public class SerializerTests {
 
     @Test
     void simpleMessage() throws JsonProcessingException, JSONException {
-        SimpleMessage simpleMessage = new SimpleMessage(Role.USER, "Hello, world!");
+        SimpleMessage simpleMessage = new SimpleMessage(
+                Role.USER, "Hello, world!");
         String jsonString = objectMapper.writeValueAsString(simpleMessage);
         System.out.println(jsonString);
 
