@@ -65,8 +65,10 @@ class OllamaServiceTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {OllamaService.LLAVA, OllamaService.LLAVA_LLAMA3,
-            OllamaService.LLAVA_PHI3, OllamaService.BAKLLAVA})
+    @ValueSource(strings = {
+            OllamaService.LLAVA, OllamaService.LLAVA_LLAMA3,
+            OllamaService.LLAVA_PHI3, OllamaService.BAKLLAVA,
+            OllamaService.MOONDREAM})
     void describeImage(String model) {
         var imageRequest = new OllamaGenerateImageRequest(
                 model,

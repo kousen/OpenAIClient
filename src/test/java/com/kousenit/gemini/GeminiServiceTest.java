@@ -103,9 +103,37 @@ class GeminiServiceTest {
         assertNotNull(models);
         models.models().stream()
                 .map(Model::name)
-                .filter(name -> name.contains("gemini"))
+                .sorted()
                 .forEach(System.out::println);
     }
+
+    @Test
+    void getCompletionWith15Flash() throws Exception {
+        String hybhy = PDFTextExtractor.extractText(
+                "src/main/resources/pdfs/help-your-boss-help-you_P1.0.pdf");
+
+        String prompt = """
+            Here is the text from the book "Help Your Boss Help You":
+            
+            %s
+            
+            Answer the following question based on information
+            contained in the book:
+            
+            %s
+            """.formatted(hybhy, "What are the top five major points made in the book?");
+
+        GeminiResponse response = service.getCompletionWithModel(
+                GeminiService.GEMINI_1_5_FLASH,
+                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+        System.out.println(response);
+        String text = response.candidates().getFirst().content().parts().getFirst().text();
+        assertNotNull(text);
+        System.out.println(text);
+        System.out.println("Input Tokens : " + service.countTokens(prompt));
+        System.out.println("Output Tokens: " + service.countTokens(text));
+    }
+
 
     @Test
     void getCompletionWith15Pro() throws Exception {

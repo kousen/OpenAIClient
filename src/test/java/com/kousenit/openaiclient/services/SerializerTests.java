@@ -73,7 +73,7 @@ public class SerializerTests {
                     {
                       "type": "image_url",
                       "image_url": {
-                        "url": "data:image/jpeg;base64,{base64_image}"
+                        "url": "data:image/png;base64,{base64_image}"
                       }
                     }
                   ]

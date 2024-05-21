@@ -15,6 +15,7 @@ import static com.kousenit.gemini.GeminiRecords.*;
 public class GeminiService {
     public static final String GEMINI_PRO = "gemini-pro";
     public static final String GEMINI_1_5_PRO = "gemini-1.5-pro-latest";
+    public static final String GEMINI_1_5_FLASH = "gemini-1.5-flash-latest";
     public static final String GEMINI_PRO_VISION = "gemini-pro-vision";
 
     private final GeminiInterface geminiInterface;

@@ -22,7 +22,7 @@ public class OllamaRecords {
         public record Details(
                 String format,
                 String family,
-                List<String> families, // This can be null, so it's represented as a list that might be empty or null
+                List<String> families,
                 String parameterSize,
                 String quantizationLevel
         ) {}

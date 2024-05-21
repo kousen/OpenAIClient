@@ -67,7 +67,7 @@ public class VisionService {
                         {
                           "type": "image_url",
                           "image_url": {
-                            "url": "data:image/jpeg;base64,%s"
+                            "url": "data:image/png;base64,%s"
                           }
                         }
                       ]
@@ -113,7 +113,7 @@ public class VisionService {
                         {
                           "type": "image_url",
                           "image_url": {
-                            "url": "data:image/jpeg;base64,%s"
+                            "url": "data:image/png;base64,%s"
                           }
                         }
                       ]

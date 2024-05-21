@@ -1,0 +1,15 @@
+GeminiResponse[candidates=[Candidate[content=Content[parts=[TextPart[text=Here are the top five major points made in the book:
+
+1. **Conflict is inevitable in the employee/manager relationship because their goals and incentives differ.**  You want to progress in your career, learn new things, and be recognized for your work.  Your manager wants to ensure that the team meets company goals, stays on budget, and avoids unnecessary risk.  Conflict is simply a result of these differing priorities.
+
+2. **Building constructive loyalty with your manager is key to your success.** This means demonstrating trust and support, even when you disagree with your manager's decisions. It's about creating a relationship where you can both achieve your goals.
+
+3. **You can train your manager to take your needs into account by using a Tit-for-Tat strategy.** This means starting by cooperating and then pushing back in a timely and constructive manner when your manager makes a decision that harms you.  Do this consistently, and your manager will learn to anticipate your reactions and avoid repeating the same mistakes.
+
+4. **Communicate effectively with your manager by understanding their communication style.**  The book suggests using the Keirsey Temperament Sorter to assess your manager's personality type, which helps you to tailor your arguments and present your ideas in a way that resonates with them.
+
+5. **Your boss is not your friend.** Maintaining a professional distance with your boss is essential for protecting yourself from being negatively impacted by their decisions. This is not about being unfriendly, but rather about avoiding oversharing and ensuring that personal opinions don't cloud their professional judgement.
+]], role=model], finishReason=STOP, index=0, safetyRatings=[SafetyRating[category=HARM_CATEGORY_SEXUALLY_EXPLICIT, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_HATE_SPEECH, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_HARASSMENT, probability=NEGLIGIBLE], SafetyRating[category=HARM_CATEGORY_DANGEROUS_CONTENT, probability=NEGLIGIBLE]]]], promptFeedback=null]
+
+Input Tokens : 79487
+Output Tokens: 321
