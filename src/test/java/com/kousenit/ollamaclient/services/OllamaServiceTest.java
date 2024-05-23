@@ -13,7 +13,6 @@ import static com.kousenit.ollamaclient.json.OllamaRecords.OllamaGenerateTextReq
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@SuppressWarnings("SqlNoDataSourceInspection")
 @SpringBootTest
 class OllamaServiceTest {
     @Autowired
@@ -28,7 +27,7 @@ class OllamaServiceTest {
 
     @Test
     void chat() {
-        var response = service.chat(OllamaService.LLAMA3,
+        var response = service.chat(OllamaModels.LLAMA3,
                 "Why is the sky blue?");
         assertFalse(response.isBlank());
         System.out.println(response);
@@ -52,7 +51,8 @@ class OllamaServiceTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {OllamaService.ORCA_MINI, OllamaService.LLAMA3, OllamaService.GEMMA})
+    @ValueSource(strings = {OllamaModels.ORCA_MINI,
+            OllamaModels.LLAMA3, OllamaModels.GEMMA})
     void generateWithText(String model) {
         var textRequest = new OllamaGenerateTextRequest(
                 model,
@@ -66,9 +66,9 @@ class OllamaServiceTest {
 
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {
-            OllamaService.LLAVA, OllamaService.LLAVA_LLAMA3,
-            OllamaService.LLAVA_PHI3, OllamaService.BAKLLAVA,
-            OllamaService.MOONDREAM})
+            OllamaModels.LLAVA, OllamaModels.LLAVA_LLAMA3,
+            OllamaModels.LLAVA_PHI3, OllamaModels.BAKLLAVA,
+            OllamaModels.MOONDREAM})
     void describeImage(String model) {
         var imageRequest = new OllamaGenerateImageRequest(
                 model,
