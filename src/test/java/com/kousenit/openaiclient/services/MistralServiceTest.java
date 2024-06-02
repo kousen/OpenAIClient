@@ -34,12 +34,12 @@ class MistralServiceTest {
                 .peek(System.out::println)
                 .map(ModelList.Model::id)
                 .toList();
-        assertNotNull(models);
-        assertThat(models).contains(
-                MistralService.MISTRAL_SMALL_LATEST,
-                MistralService.MISTRAL_MEDIUM_LATEST,
-                MistralService.MISTRAL_LARGE_LATEST,
-                MistralService.OPEN_MISTRAL_7B,
-                MistralService.OPEN_MIXTRAL_8x7B);
+        assertThat(models)
+                .isNotEmpty()
+                .contains(MistralService.MISTRAL_SMALL_LATEST,
+                        MistralService.MISTRAL_MEDIUM_LATEST,
+                        MistralService.MISTRAL_LARGE_LATEST,
+                        MistralService.OPEN_MISTRAL_7B,
+                        MistralService.OPEN_MIXTRAL_8x7B);
     }
 }

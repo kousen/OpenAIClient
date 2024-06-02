@@ -1,5 +1,6 @@
 package com.kousenit.openaiclient.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -15,9 +16,14 @@ public class MistralService {
     public static final String OPEN_MISTRAL_7B = "open-mistral-7b";
     public static final String OPEN_MIXTRAL_8x7B = "open-mixtral-8x7b";
 
-    private final RestClient restClient = RestClient.create("https://api.mistral.ai");
+    private final RestClient restClient;
+    private final String apiKey;
 
-    private final String apiKey = System.getenv("MISTRAL_API_KEY");
+    public MistralService(@Value("${mistral.api.key}") String apiKey,
+                          @Value("${mistral.baseurl}") String baseUrl) {
+        restClient = RestClient.create(baseUrl);
+        this.apiKey = apiKey;
+    }
 
     public ModelList listModels() {
         return restClient.get()
