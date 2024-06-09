@@ -1,5 +1,7 @@
 package com.kousenit.ollamaclient.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import static com.kousenit.ollamaclient.json.OllamaRecords.ModelList.OllamaModel
 @Service
 public class OllamaService {
     public static final String DEFAULT_MODEL = "orca-mini";
+    private static final Logger log = LoggerFactory.getLogger(OllamaService.class);
 
     private final OllamaInterface ollamaInterface;
 
@@ -47,19 +50,17 @@ public class OllamaService {
                 .collect(Collectors.toList());
         var request = new OllamaChatRequest(model, messages, false);
         var response = ollamaInterface.chat(request);
+        log.info("Conversation response: {}", response);
         return response.message().content();
     }
 
     public String generate(OllamaGenerateRequest request) {
-        return switch (request) {
-            case OllamaGenerateImageRequest imageRequest -> {
-                System.out.printf("Reading image using %s%n", imageRequest.model());
-                yield ollamaInterface.generate(imageRequest).response();
-            }
-            case OllamaGenerateTextRequest textRequest -> {
-                System.out.printf("Generating text response from %s...%n", textRequest.model());
-                yield ollamaInterface.generate(textRequest).response();
-            }
-        };
+        switch (request) {
+            case OllamaGenerateImageRequest imageRequest ->
+                    System.out.printf("Reading image using %s%n", imageRequest.model());
+            case OllamaGenerateTextRequest textRequest ->
+                    System.out.printf("Generating text response from %s...%n", textRequest.model());
+        }
+        return ollamaInterface.generate(request).response();
     }
 }

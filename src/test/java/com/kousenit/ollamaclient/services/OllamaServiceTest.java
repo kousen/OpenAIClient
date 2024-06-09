@@ -50,6 +50,20 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
+    @Test
+    void conversation1() {
+        var response = service.conversation("llama3",
+                """
+                I am the most successful author on the Pragmatic Bookshelf.
+                Who am I?""",
+                "Venkat Subramaniam",
+                "Okay, other than him. Now who am I?",
+                "Bruce Tate? Johanna Rothman? Dave Thomas?",
+                "Cripes, never mind.");
+        assertFalse(response.isBlank());
+        System.out.println(response);
+    }
+
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {OllamaModels.ORCA_MINI,
             OllamaModels.LLAMA3, OllamaModels.GEMMA})

@@ -1,5 +1,7 @@
 package com.kousenit.ollamaclient.json;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kousenit.ollamaclient.utils.FileUtils;
 
 import java.time.OffsetDateTime;
@@ -82,6 +84,7 @@ public class OllamaRecords {
             boolean stream) {
     }
 
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record OllamaChatResponse(
             String model,
             String createdAt,
