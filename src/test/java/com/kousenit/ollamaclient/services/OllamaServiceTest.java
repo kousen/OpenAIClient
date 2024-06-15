@@ -1,10 +1,14 @@
 package com.kousenit.ollamaclient.services;
 
+import com.kousenit.ollamaclient.config.OllamaConfig;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.Import;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 
@@ -13,7 +17,10 @@ import static com.kousenit.ollamaclient.json.OllamaRecords.OllamaGenerateTextReq
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@SpringBootTest
+//@SpringBootTest
+@WebFluxTest(OllamaService.class)
+@Import(OllamaConfig.class)
+@Tag("current")
 class OllamaServiceTest {
     @Autowired
     private OllamaService service;
@@ -94,4 +101,16 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
+    @Test
+    void asyncChat() {
+        var response = service.asyncChat(OllamaModels.ORCA_MINI,
+                "Why is the sky blue?");
+
+        StepVerifier.create(response)
+                .consumeNextWith(resp -> {
+                    System.out.println("Response: " + resp);
+                    assert resp.contains("scattering"); // Adjust the expected response as needed
+                })
+                .verifyComplete();
+    }
 }

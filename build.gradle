@@ -44,6 +44,8 @@ dependencies {
 }
 
 tasks.named('test', Test) {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeTags('current')
+    }
     jvmArgs("-XX:+EnableDynamicAgentLoading", "-Xshare:off")
 }

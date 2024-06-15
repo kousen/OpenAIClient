@@ -1,5 +1,6 @@
 package com.kousenit.ollamaclient.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kousenit.ollamaclient.utils.FileUtils;
@@ -93,5 +94,14 @@ public class OllamaRecords {
             long totalDuration,
             int promptEvalCount,
             int evalCount) {
+    }
+
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record OllamaStreamingChatResponse(
+            String model,
+            String createdAt,
+            Message message,
+            boolean done) {
     }
 }

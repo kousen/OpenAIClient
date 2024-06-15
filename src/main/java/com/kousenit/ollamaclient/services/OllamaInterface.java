@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
+import reactor.core.publisher.Flux;
 
 import static com.kousenit.ollamaclient.json.OllamaRecords.*;
 
@@ -25,4 +26,7 @@ public interface OllamaInterface {
 
     @PostExchange("/chat")
     OllamaChatResponse chat(@RequestBody OllamaChatRequest question);
+
+    @PostExchange("/chat")
+    Flux<OllamaStreamingChatResponse> asyncChat(@RequestBody OllamaChatRequest question);
 }
