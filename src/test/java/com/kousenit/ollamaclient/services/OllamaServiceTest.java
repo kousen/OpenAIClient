@@ -94,7 +94,7 @@ class OllamaServiceTest {
         var imageRequest = new OllamaGenerateImageRequest(
                 model,
                 "What is in this image?",
-                List.of("src/main/resources/images/cats_playing_cards.png"),
+                List.of("src/main/resources/images/chicken_crossing_the_road.png"),
                 false);
         var response = service.generate(imageRequest);
         assertFalse(response.isBlank());
