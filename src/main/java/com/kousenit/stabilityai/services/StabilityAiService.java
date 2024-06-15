@@ -27,7 +27,18 @@ public class StabilityAiService {
     public byte[] requestStabilityAiImage(String prompt) {
         logger.info("Requesting image for prompt: {}", prompt);
         byte[] bytes = stabilityAiInterface.requestStableImage(
-                prompt, "sd3", "1:1", "png");
+                prompt, "sd3-medium", "1:1", "png");
+        boolean success = FileUtils.writeImageBytesToFile(bytes);
+        if (!success) {
+            throw new RuntimeException("Failed to write image to file");
+        }
+        return bytes;
+    }
+
+    public byte[] requestStabilityAiImageUltra(String prompt) {
+        logger.info("Requesting image for prompt: {}", prompt);
+        byte[] bytes = stabilityAiInterface.requestStableImageUltra(
+                prompt, "1:1", "png");
         boolean success = FileUtils.writeImageBytesToFile(bytes);
         if (!success) {
             throw new RuntimeException("Failed to write image to file");

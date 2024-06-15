@@ -24,6 +24,14 @@ public interface StabilityAiInterface {
             @RequestPart String aspect_ratio,
             @RequestPart String output_format);
 
+    @PostExchange(value = "/stable-image/generate/ultra",
+            accept = "image/*",
+            contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
+    byte[] requestStableImageUltra(
+            @RequestPart String prompt,
+            @RequestPart String aspect_ratio,
+            @RequestPart String output_format);
+
     @PostExchange(value = "/image-to-video",
             accept = MediaType.APPLICATION_JSON_VALUE,
             contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
