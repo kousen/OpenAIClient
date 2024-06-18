@@ -5,6 +5,8 @@ import com.kousenit.openaiclient.util.FileUtils;
 import com.kousenit.stabilityai.util.ImageResizer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,16 +25,18 @@ class StabilityAiServiceTest {
     @Autowired
     private StabilityAiService stabilityAiService;
 
-    @Test
-    void requestStabilityAiImage() {
+    @Tag("current")
+    @ParameterizedTest(name = "Request stability AI image with model: {0}")
+    @ValueSource(strings = {"sd3-medium", "sd3-large", "sd3-large-turbo"})
+    void requestStabilityAiImage(String model) {
         byte[] bytes = stabilityAiService.requestStabilityAiImage("""
-                cats playing gin rummy
-                """);
+                stochastic parrots playing chess
+                """,
+                model);
         assertThat(bytes).isNotEmpty();
         System.out.println("bytes.length = " + bytes.length);
     }
 
-    @Tag("current")
     @Test
     void requestStabilityAiImageUltra() {
         byte[] bytes = stabilityAiService.requestStabilityAiImageUltra("""

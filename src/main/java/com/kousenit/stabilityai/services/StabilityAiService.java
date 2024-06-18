@@ -24,10 +24,10 @@ public class StabilityAiService {
         this.taskScheduler = taskScheduler;
     }
 
-    public byte[] requestStabilityAiImage(String prompt) {
-        logger.info("Requesting image for prompt: {}", prompt);
+    public byte[] requestStabilityAiImage(String prompt, String model) {
+        logger.info("Requesting {} image for prompt: {}", model, prompt);
         byte[] bytes = stabilityAiInterface.requestStableImage(
-                prompt, "sd3-medium", "1:1", "png");
+                prompt, model, "1:1", "png");
         boolean success = FileUtils.writeImageBytesToFile(bytes);
         if (!success) {
             throw new RuntimeException("Failed to write image to file");
@@ -36,7 +36,7 @@ public class StabilityAiService {
     }
 
     public byte[] requestStabilityAiImageUltra(String prompt) {
-        logger.info("Requesting image for prompt: {}", prompt);
+        logger.info("Requesting ultra image for prompt: {}", prompt);
         byte[] bytes = stabilityAiInterface.requestStableImageUltra(
                 prompt, "1:1", "png");
         boolean success = FileUtils.writeImageBytesToFile(bytes);
