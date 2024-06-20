@@ -9,6 +9,8 @@ import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,39 +21,38 @@ public class WavFileSplitter {
 
     public List<Resource> splitWavResourceIntoChunks(Resource sourceResource)
             throws IOException, UnsupportedAudioFileException {
-        List<Resource> chunks = new ArrayList<>();
-        int chunkCounter = 1;
-
         // Ensure the source resource exists and is readable
         if (!sourceResource.exists()) {
             throw new IllegalArgumentException("Source resource not found");
         }
 
-        // Convert Resource to File (if possible) or handle as InputStream
-        File sourceFile = sourceResource.getFile();
+        Path sourcePath = sourceResource.getFile().toPath();
+        List<Resource> chunks = new ArrayList<>();
 
-        try (AudioInputStream inputStream = AudioSystem.getAudioInputStream(sourceFile)) {
-            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(sourceFile);
+        try (AudioInputStream inputStream = AudioSystem.getAudioInputStream(sourcePath.toFile())) {
+            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(sourcePath.toFile());
             AudioFormat format = fileFormat.getFormat();
             long totalFrames = inputStream.getFrameLength();
             int frameSize = format.getFrameSize();
             long framesPerChunk = MAX_CHUNK_SIZE_BYTES / frameSize;
 
             byte[] buffer = new byte[(int) (framesPerChunk * frameSize)];
+            int chunkCounter = 1;
 
             while (totalFrames > 0) {
                 long framesToRead = Math.min(totalFrames, framesPerChunk);
                 int bytesRead = inputStream.read(buffer, 0, (int) (framesToRead * frameSize));
                 if (bytesRead > 0) {
                     // Create a temporary file for the chunk
-                    File chunkFile = File.createTempFile("chunk-" + chunkCounter, ".wav");
-                    try (var partStream = new AudioInputStream(
+                    Path chunkPath = Files.createTempFile("chunk-" + chunkCounter, ".wav");
+
+                    try (AudioInputStream partStream = new AudioInputStream(
                             new ByteArrayInputStream(buffer, 0, bytesRead), format, framesToRead)) {
-                        AudioSystem.write(partStream, AudioFileFormat.Type.WAVE, chunkFile);
+                        AudioSystem.write(partStream, AudioFileFormat.Type.WAVE, chunkPath.toFile());
                     }
 
-                    // Convert File to Resource
-                    Resource chunkResource = new FileSystemResource(chunkFile);
+                    // Convert Path to Resource
+                    Resource chunkResource = new FileSystemResource(chunkPath.toFile());
                     chunks.add(chunkResource);
                     chunkCounter++;
                 }

@@ -1,6 +1,7 @@
 package com.kousenit.openaiclient.services;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,13 +15,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("current")
 @SpringBootTest
 class WavFileSplitterTest {
     @Autowired
     private WavFileSplitter splitter;
 
-    @Value("${whisper.max_allowed_size}")
-    public int MAX_ALLOWED_SIZE;
+    //@Value("${whisper.max_allowed_size}")
+    public int MAX_ALLOWED_SIZE = 25 * 1024 * 1024;
 
     @Test
     void splitWavFileIntoChunks(@Value("classpath:audio/EarningsCall.wav") Resource wavFile) throws IOException {

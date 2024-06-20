@@ -3,7 +3,6 @@ package com.kousenit.stabilityai.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kousenit.openaiclient.util.FileUtils;
 import com.kousenit.stabilityai.util.ImageResizer;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,7 +24,6 @@ class StabilityAiServiceTest {
     @Autowired
     private StabilityAiService stabilityAiService;
 
-    @Tag("current")
     @ParameterizedTest(name = "Request stability AI image with model: {0}")
     @ValueSource(strings = {"sd3-medium", "sd3-large", "sd3-large-turbo"})
     void requestStabilityAiImage(String model) {
