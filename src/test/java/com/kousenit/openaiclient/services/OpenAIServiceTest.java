@@ -2,7 +2,6 @@ package com.kousenit.openaiclient.services;
 
 import com.kousenit.openaiclient.json.Role;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +16,6 @@ import static com.kousenit.openaiclient.json.OpenAIRecords.ModelList.Model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("current")
 @SpringBootTest
 class OpenAIServiceTest {
     @Autowired

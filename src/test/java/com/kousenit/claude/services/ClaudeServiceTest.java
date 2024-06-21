@@ -42,7 +42,7 @@ class ClaudeServiceTest {
                     with AI tools.
                     """;
             var response = claudeService.getClaudeMessageResponse(
-                    question, ClaudeService.CLAUDE_3_SONNET);
+                    question, ClaudeService.CLAUDE_35_SONNET);
             System.out.println(response);
             assertThat(response).isNotBlank();
         }
