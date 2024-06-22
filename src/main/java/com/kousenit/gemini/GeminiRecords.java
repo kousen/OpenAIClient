@@ -4,7 +4,8 @@ import java.util.List;
 
 public class GeminiRecords {
 
-    public record GeminiRequest(List<Content> contents) {}
+    public record GeminiRequest(
+            List<Content> contents) {}
     public record Content(List<Part> parts) {}
 
     // "sealed" classes and interfaces:
@@ -20,12 +21,14 @@ public class GeminiRecords {
 
     public record InlineData(String mimeType, String data) { }
 
-    public record GeminiResponse(List<Candidate> candidates,
-                                 PromptFeedback promptFeedback) {
-        public record Candidate(Content content,
-                                String finishReason,
-                                int index,
-                                List<SafetyRating> safetyRatings) {
+    public record GeminiResponse(
+            List<Candidate> candidates,
+            PromptFeedback promptFeedback) {
+        public record Candidate(
+                Content content,
+                String finishReason,
+                int index,
+                List<SafetyRating> safetyRatings) {
             public record Content(List<TextPart> parts, String role) { }
         }
     }

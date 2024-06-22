@@ -16,7 +16,6 @@ public class GeminiService {
     public static final String GEMINI_PRO = "gemini-pro";
     public static final String GEMINI_1_5_PRO = "gemini-1.5-pro-latest";
     public static final String GEMINI_1_5_FLASH = "gemini-1.5-flash-latest";
-    public static final String GEMINI_PRO_VISION = "gemini-pro-vision";
 
     private final GeminiInterface geminiInterface;
 
@@ -34,13 +33,15 @@ public class GeminiService {
     }
 
     public int countTokens(String text) {
-        GeminiCountResponse response = countTokens(GEMINI_PRO, new GeminiRequest(
-                List.of(new Content(List.of(new TextPart(text))))));
+        GeminiCountResponse response = countTokens(
+                GEMINI_1_5_FLASH,
+                new GeminiRequest(
+                        List.of(new Content(List.of(new TextPart(text))))));
         return response.totalTokens();
     }
 
     public GeminiResponse getCompletion(GeminiRequest request) {
-        return geminiInterface.getCompletion(GEMINI_PRO, request);
+        return geminiInterface.getCompletion(GEMINI_1_5_FLASH, request);
     }
 
     public GeminiResponse getCompletionWithModel(String model, GeminiRequest request) {
@@ -49,7 +50,7 @@ public class GeminiService {
 
 
     public GeminiResponse getCompletionWithImage(GeminiRequest request) {
-        return geminiInterface.getCompletion(GEMINI_PRO_VISION, request);
+        return geminiInterface.getCompletion(GEMINI_1_5_FLASH, request);
     }
 
     public GeminiResponse analyzeImage(GeminiRequest request) {
