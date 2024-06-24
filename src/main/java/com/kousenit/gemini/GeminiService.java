@@ -36,7 +36,7 @@ public class GeminiService {
         GeminiCountResponse response = countTokens(
                 GEMINI_1_5_FLASH,
                 new GeminiRequest(
-                        List.of(new Content(List.of(new TextPart(text))))));
+                        List.of(new Content(List.of(new TextPart(text)), "user")), null));
         return response.totalTokens();
     }
 
@@ -59,7 +59,7 @@ public class GeminiService {
 
     public String getCompletion(String text) {
         GeminiResponse response = getCompletion(new GeminiRequest(
-                List.of(new Content(List.of(new TextPart(text))))));
+                List.of(new Content(List.of(new TextPart(text)), "user")), null));
         return response.candidates().getFirst().content().parts().getFirst().text();
     }
 
@@ -69,8 +69,9 @@ public class GeminiService {
                         new TextPart(text),
                         new InlineDataPart(new InlineData("image/png",
                                 Base64.getEncoder().encodeToString(Files.readAllBytes(
-                                        Path.of("src/main/resources/", imageFileName))))))
-                ))));
+                                        Path.of("src/main/resources/", imageFileName)))))),
+                        "user"
+                )), null));
         System.out.println(response);
         return response.candidates().getFirst().content().parts().getFirst().text();
     }
@@ -81,8 +82,9 @@ public class GeminiService {
                         new TextPart(text),
                         new InlineDataPart(new InlineData("image/png",
                                 Base64.getEncoder().encodeToString(Files.readAllBytes(
-                                        Path.of("src/main/resources/", imageFileName))))))
-                ))));
+                                        Path.of("src/main/resources/", imageFileName)))))),
+                        "user"
+                )), null));
         System.out.println(response);
         return response.candidates().getFirst().content().parts().getFirst().text();
     }

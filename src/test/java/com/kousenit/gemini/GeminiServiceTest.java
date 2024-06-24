@@ -1,5 +1,6 @@
 package com.kousenit.gemini;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -42,7 +43,7 @@ class GeminiServiceTest {
         System.out.println(text);
     }
 
-    @Test
+    @Test @Tag("current")
     void pirateCoverLetter() {
         String text = service.getCompletion("""
             Please write a cover letter for a Java developer
@@ -111,7 +112,7 @@ class GeminiServiceTest {
 
         GeminiResponse response = service.getCompletionWithModel(
                 GeminiService.GEMINI_1_5_FLASH,
-                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt)), "user")), null));
         System.out.println(response);
         String text = response.candidates().getFirst().content().parts().getFirst().text();
         assertNotNull(text);
@@ -139,7 +140,7 @@ class GeminiServiceTest {
 
         GeminiResponse response = service.getCompletionWithModel(
                 GeminiService.GEMINI_1_5_PRO,
-                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+                new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt)), "user")), null));
         System.out.println(response);
         String text = response.candidates().getFirst().content().parts().getFirst().text();
         assertNotNull(text);
@@ -152,7 +153,8 @@ class GeminiServiceTest {
     void countTokens_fullRequest() {
         var request = new GeminiRequest(
                 List.of(new Content(
-                        List.of(new TextPart("What is the airspeed velocity of an unladen swallow?")))));
+                        List.of(new TextPart("What is the airspeed velocity of an unladen swallow?")),
+                        "user")), null);
         GeminiCountResponse response = service.countTokens(GeminiService.GEMINI_PRO, request);
         assertNotNull(response);
         System.out.println(response);
@@ -200,7 +202,7 @@ class GeminiServiceTest {
                     """.formatted(book);
             GeminiResponse response = service.getCompletionWithModel(
                     GeminiService.GEMINI_1_5_PRO,
-                    new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt))))));
+                    new GeminiRequest(List.of(new Content(List.of(new TextPart(prompt)), "user")), null));
             System.out.println(response);
         }
     }

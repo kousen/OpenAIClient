@@ -4,9 +4,8 @@ import java.util.List;
 
 public class GeminiRecords {
 
-    public record GeminiRequest(
-            List<Content> contents) {}
-    public record Content(List<Part> parts) {}
+    public record GeminiRequest(List<Content> contents, String cachedContent) {}
+    public record Content(List<Part> parts, String role) {}
 
     // "sealed" classes and interfaces:
     // - only "permitted" classes can implement the interface
@@ -38,6 +37,39 @@ public class GeminiRecords {
 
     // Returned from "count" endpoint
     public record GeminiCountResponse(int totalTokens) { }
+
+    // Cache request
+    public record CachedContent(
+            List<Content> contents,
+            List<Tool> tools,
+            String createTime,  // output only (Timestamp)
+            String updateTime,  // output only (Timestamp)
+            UsageMetadata usageMetadata,  // output only
+            String ttl,  // Duration in seconds, ending in "s", as in "3.5s"
+            String name, // optional, format: "cachedContents/{id}"
+            String displayName,  // optional
+            String model,        // models/{model}
+            Content systemInstruction, // optional
+            ToolConfig toolConfig  // optional
+    ) {
+        public record UsageMetadata(int totalTokenCount) { }
+        public record Tool(List<FunctionDeclaration> functionDeclarations) {
+            public record FunctionDeclaration(String name, String description, List<Parameter> parameters) { }
+            public record Parameter(String name, String type) { }
+        }
+        public record ToolConfig(FunctionCallingConfig functionCallingConfig, Mode mode) {
+            public record FunctionCallingConfig(String mode, List<String> allowedFunctionNames) { }
+        }
+
+        public enum Mode {
+            MODE_UNSPECIFIED, AUTO, ANY, NONE
+        }
+    }
+
+    public record CachedContentResponse(
+            List<CachedContent> cachedContents,
+            String nextPageToken
+    ) {}
 
     // Models
     public record ModelList(List<Model> models) {}
