@@ -11,10 +11,9 @@ public class OllamaModels {
     // Text models
     public static final String ORCA_MINI = "orca-mini";
     public static final String LLAMA3 = "llama3";
-    public static final String GEMMA = "gemma";
+    public static final String GEMMA2 = "gemma2";
 
     // "Uncensored" models
     public static final String LLAMA2_UNCENSORED = "llama2-uncensored";
     public static final String WIZARDLM_UNCENSORED = "wizardlm-uncensored";
-    public static final String DOLPHIN_MIXTRAL = "dolphin-mixtral";
 }

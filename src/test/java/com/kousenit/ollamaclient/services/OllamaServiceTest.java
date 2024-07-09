@@ -1,6 +1,8 @@
 package com.kousenit.ollamaclient.services;
 
 import com.kousenit.ollamaclient.config.OllamaConfig;
+import com.kousenit.ollamaclient.json.OllamaRecords;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -23,10 +25,14 @@ class OllamaServiceTest {
     @Autowired
     private OllamaService service;
 
+    @Tag("current")
     @Test
     void getModels() {
         var models = service.getModels();
-        models.forEach(System.out::println);
+        models.stream()
+                .map(OllamaRecords.ModelList.OllamaModel::name)
+                .sorted()
+                .forEach(System.out::println);
     }
 
 
@@ -71,7 +77,7 @@ class OllamaServiceTest {
 
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {OllamaModels.ORCA_MINI,
-            OllamaModels.LLAMA3, OllamaModels.GEMMA})
+            OllamaModels.LLAMA3, OllamaModels.GEMMA2})
     void generateWithText(String model) {
         var textRequest = new OllamaGenerateTextRequest(
                 model,
@@ -83,6 +89,7 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
+    @Tag("current")
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {
             OllamaModels.LLAVA, OllamaModels.LLAVA_LLAMA3,
@@ -91,8 +98,8 @@ class OllamaServiceTest {
     void describeImage(String model) {
         var imageRequest = new OllamaGenerateImageRequest(
                 model,
-                "What is in this image?",
-                List.of("src/main/resources/images/chicken_crossing_the_road.png"),
+                "Please give me an inventory of the books on this shelf.",
+                List.of("src/main/resources/images/books_on_shelf.jpg"),
                 false);
         var response = service.generate(imageRequest);
         assertFalse(response.isBlank());

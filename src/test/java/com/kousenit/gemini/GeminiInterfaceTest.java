@@ -70,7 +70,7 @@ class GeminiInterfaceTest {
 
     @Test
     void getCachedContent() {
-        CachedContent cachedContent = geminiInterface.getCachedContent("m4qhg6ir3lqq");
+        CachedContent cachedContent = geminiInterface.getCachedContent("f0njna79xx9");
         assertNotNull(cachedContent);
         System.out.println(cachedContent);
     }

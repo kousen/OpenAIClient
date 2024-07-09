@@ -1,6 +1,5 @@
 package com.kousenit.gemini;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -43,7 +42,7 @@ class GeminiServiceTest {
         System.out.println(text);
     }
 
-    @Test @Tag("current")
+    @Test
     void pirateCoverLetter() {
         String text = service.getCompletion("""
             Please write a cover letter for a Java developer
