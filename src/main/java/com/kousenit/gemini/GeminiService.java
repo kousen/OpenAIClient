@@ -28,15 +28,18 @@ public class GeminiService {
         return geminiInterface.getModels();
     }
 
-    public GeminiCountResponse countTokens(String model, GeminiRequest request) {
+    public GeminiCountResponse countTokens(String model, CountTokensRequest request) {
         return geminiInterface.countTokens(model, request);
     }
 
     public int countTokens(String text) {
         GeminiCountResponse response = countTokens(
                 GEMINI_1_5_FLASH,
-                new GeminiRequest(
-                        List.of(new Content(List.of(new TextPart(text)), "user")), null));
+                new CountTokensRequest(
+                        List.of(new Content(List.of(new TextPart(text)), "user")),
+                        new GenerateContentRequest(GEMINI_1_5_FLASH,
+                                List.of(), List.of(), null, null, null,
+                                null, null)));
         return response.totalTokens();
     }
 

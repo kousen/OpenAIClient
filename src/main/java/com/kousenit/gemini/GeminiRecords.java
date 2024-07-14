@@ -4,6 +4,46 @@ import java.util.List;
 
 public class GeminiRecords {
 
+    public record CountTokensRequest(
+            List<Content> contents,
+            GenerateContentRequest generateContentRequest
+    ) {}
+
+    // Add GenerateContentRequest record
+    public record GenerateContentRequest(
+            String model,
+            List<Content> contents,
+            List<CachedContent.Tool> tools,
+            CachedContent.ToolConfig toolConfig,
+            List<SafetySetting> safetySettings,
+            Content systemInstruction,
+            GenerationConfig generationConfig,
+            String cachedContent
+    ) {}
+
+    public record SafetySetting(
+            SafetyCategory category,
+            SafetyThreshold threshold
+    ) {}
+
+    public enum SafetyCategory {
+        HARM_CATEGORY_HATE_SPEECH,
+        HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        HARM_CATEGORY_DANGEROUS_CONTENT,
+        HARM_CATEGORY_HARASSMENT
+        // Add other categories if needed
+    }
+
+    public enum SafetyThreshold {
+        // Add threshold levels as needed
+    }
+
+    // Add GenerationConfig record (placeholder)
+    public record GenerationConfig(
+            // Add fields as needed
+    ) {}
+
+
     public record GeminiRequest(List<Content> contents, String cachedContent) {}
     public record Content(List<Part> parts, String role) {}
 
@@ -34,6 +74,7 @@ public class GeminiRecords {
 
     public record SafetyRating(String category, String probability) { }
     public record PromptFeedback(List<SafetyRating> safetyRatings) { }
+
 
     // Returned from "count" endpoint
     public record GeminiCountResponse(int totalTokens) { }

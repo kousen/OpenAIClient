@@ -19,7 +19,7 @@ public interface GeminiInterface {
     @PostExchange("/models/{model}:countTokens")
     GeminiCountResponse countTokens(
             @PathVariable String model,
-            @RequestBody GeminiRequest request);
+            @RequestBody CountTokensRequest request);
 
     @PostExchange("cachedContents")
     CachedContent createCachedContents(

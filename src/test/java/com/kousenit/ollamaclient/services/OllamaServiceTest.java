@@ -2,7 +2,6 @@ package com.kousenit.ollamaclient.services;
 
 import com.kousenit.ollamaclient.config.OllamaConfig;
 import com.kousenit.ollamaclient.json.OllamaRecords;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,7 +24,6 @@ class OllamaServiceTest {
     @Autowired
     private OllamaService service;
 
-    @Tag("current")
     @Test
     void getModels() {
         var models = service.getModels();
@@ -89,7 +87,6 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
-    @Tag("current")
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {
             OllamaModels.LLAVA, OllamaModels.LLAVA_LLAMA3,
