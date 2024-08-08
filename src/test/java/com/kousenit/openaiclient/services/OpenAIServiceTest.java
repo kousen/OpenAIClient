@@ -36,6 +36,7 @@ class OpenAIServiceTest {
                 .anyMatch(name -> name.contains(OpenAIService.GPT4O));
         modelNames.stream()
                 .filter(name -> name.contains("gpt"))
+                .sorted()
                 .forEach(System.out::println);
     }
 
@@ -48,7 +49,7 @@ class OpenAIServiceTest {
 
     @Test
     void getChatResponse() {
-        String response = openAIService.getChatResponse(OpenAIService.GPT4O,
+        String response = openAIService.getChatResponse(OpenAIService.GPT4O_MINI,
                 List.of(new Message(Role.USER,
                         """
                                 According to Douglas Adams, what is the Ultimate Answer

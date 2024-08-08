@@ -1,6 +1,5 @@
 package com.kousenit.gemini;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -151,7 +150,7 @@ class GeminiServiceTest {
         System.out.println("Output Tokens: " + service.countTokens(text));
     }
 
-    @Test @Tag("current")
+    @Test
     void countTokens_fullRequest() {
         var content = new Content(
                 List.of(new TextPart("What is the airspeed velocity of an unladen swallow?")), "user");

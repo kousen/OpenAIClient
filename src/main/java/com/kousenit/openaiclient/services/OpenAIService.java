@@ -24,6 +24,7 @@ public class OpenAIService {
     public static final String GPT35 = "gpt-3.5-turbo";
     public static final String GPT4 = "gpt-4-turbo";
     public static final String GPT4O = "gpt-4o";
+    public static final String GPT4O_MINI = "gpt-4o-mini";
 
     private final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
 

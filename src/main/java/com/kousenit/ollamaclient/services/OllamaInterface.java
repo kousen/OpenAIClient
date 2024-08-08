@@ -28,5 +28,5 @@ public interface OllamaInterface {
     OllamaChatResponse chat(@RequestBody OllamaChatRequest question);
 
     @PostExchange("/chat")
-    Flux<OllamaStreamingChatResponse> asyncChat(@RequestBody OllamaChatRequest question);
+    Flux<String> asyncChat(@RequestBody OllamaChatRequest question);
 }

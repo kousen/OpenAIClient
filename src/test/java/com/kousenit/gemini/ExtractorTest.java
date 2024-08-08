@@ -1,13 +1,11 @@
 package com.kousenit.gemini;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Tag("current")
 class ExtractorTest {
 
     @ParameterizedTest(name = "Extract text from {0}")

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kousenit.openaiclient.services.DallEService;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -68,7 +67,7 @@ public class OpenAIRecords {
     }
 
     public record ImageRequest(
-            @NotBlank @Pattern(regexp = "dall-e-[23]") String model,
+            @Pattern(regexp = "dall-e-[23]") String model,
             @Size(max = 4096) String prompt,
             int n,          // must be 1 for DALL-E-3
             String quality, // "standard" or "hd" for DALL-E-3
