@@ -12,11 +12,9 @@ public enum Voice {
         return name().toLowerCase();
     }
 
-    private static final Voice[] VOICES = values();
-    private static final int SIZE = VOICES.length;
-    private static final Random RANDOM = new Random();
-
     public static Voice randomVoice()  {
-        return VOICES[RANDOM.nextInt(SIZE)];
+        Random random = new Random();
+        Voice[] voices = values();
+        return voices[random.nextInt(voices.length)];
     }
 }

@@ -1,6 +1,7 @@
 package com.kousenit.openaiclient.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kousenit.openaiclient.services.TextToSpeechService;
 import jakarta.validation.constraints.*;
 
 public record TTSRequest(
@@ -10,19 +11,22 @@ public record TTSRequest(
         @JsonProperty("response_format") ResponseFormat responseFormat,
         @DecimalMin("0.25") @DecimalMax("4.0") double speed
 ) {
-    public TTSRequest {
-        if (model == null) {
-            model = "tts-1";
-        }
-        if (responseFormat == null) {
-            responseFormat = ResponseFormat.MP3;
-        }
-        if (speed < 0.25 || speed > 4.0) {
-            throw new IllegalArgumentException("Speed must be between 0.25 and 4.0");
-        }
-    }
-
     public TTSRequest(String model, String input, Voice voice) {
         this(model, input, voice, ResponseFormat.MP3, 1.0);
     }
+
+    public TTSRequest(String input, Voice voice) {
+        this("tts-1", input, voice, ResponseFormat.MP3, 1.0);
+    }
+
+    // Compact constructor for validation and transformation
+    public TTSRequest {
+        model = model != null ? model : TextToSpeechService.TTS_1;
+        responseFormat = responseFormat != null ? responseFormat : ResponseFormat.MP3;
+
+        if (speed < 0.25 || speed > 4.0) {
+            throw new IllegalArgumentException("Speed must be between 0.25 and 4.0: " + speed);
+        }
+    }
+
 }

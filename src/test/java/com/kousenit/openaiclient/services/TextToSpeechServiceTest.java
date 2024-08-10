@@ -4,6 +4,7 @@ import com.kousenit.openaiclient.json.ResponseFormat;
 import com.kousenit.openaiclient.json.TTSRequest;
 import com.kousenit.openaiclient.json.Voice;
 import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +41,6 @@ class TextToSpeechServiceTest {
                 .isThrownBy(() -> service.getAudioResponse(ttsRequest))
                 .withMessageContaining("must not be blank")
                 .withMessageContaining("must be greater than or equal to 0.25");
-
     }
 
     @Test
@@ -68,9 +68,10 @@ class TextToSpeechServiceTest {
         service.createAndPlay(audioPrompt, voice);
     }
 
+    // NOTE: The JUnit library is referred to here as J-Unit to make
+    // the audio file pronounce it correctly.
     @Test
-        // NOTE: The JUnit library is referred to here as J-Unit to make
-        // the audio come out correctly.
+    @Tag("current")
     void createAndPlay_includingTechnicalWords() {
         Voice voice = Voice.randomVoice();
         System.out.println("Using voice " + voice);
@@ -88,6 +89,18 @@ class TextToSpeechServiceTest {
                 Since the cost of the base TTS model is only 1.5 cents per
                 1000 characters, this test cost less than a penny to run.
                 """, voice);
+    }
+
+    @Test
+    @Tag("current")
+    void munchScream() {
+        String firstHalf = "A".repeat(2048);
+        String secondHalf = "H".repeat(2048);
+        String scream = firstHalf + secondHalf;
+        Voice voice = Voice.randomVoice();
+        System.out.println("Screaming using voice " + voice);
+        System.out.println(scream);
+        service.createAndPlay(scream, voice);
     }
 
     @Test
