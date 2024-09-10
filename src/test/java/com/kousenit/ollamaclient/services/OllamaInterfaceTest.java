@@ -3,19 +3,55 @@ package com.kousenit.ollamaclient.services;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 import static com.kousenit.ollamaclient.json.OllamaRecords.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 class OllamaInterfaceTest {
 
     @Autowired
     private OllamaInterface ollamaInterface;
+
+    @Test
+    void asycChat() {
+        var request = new OllamaChatRequest("orca-mini",
+                List.of(new Message("user", "Why is the sky blue?")),
+                true);
+        Flux<String> response = ollamaInterface.asyncChat(request);
+        response.subscribe(new Subscriber<>() {
+            private Subscription subscription;
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                this.subscription = s;
+            }
+
+            @Override
+            public void onNext(String ollamaStreamingChatResponse) {
+                System.out.println(ollamaStreamingChatResponse);
+                subscription.request(1);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                System.err.println(t.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("Done");
+            }
+        });
+    }
 
     @Test
     void generate() {

@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.Import;
-import reactor.test.StepVerifier;
 
 import java.util.List;
 
@@ -103,16 +102,15 @@ class OllamaServiceTest {
         System.out.println(response);
     }
 
-    @Test
-    void asyncChat() {
-        var response = service.asyncChat(OllamaModels.ORCA_MINI,
-                "Why is the sky blue?");
-
-        StepVerifier.create(response)
-                .consumeNextWith(resp -> {
-                    System.out.println("Response: " + resp);
-                    assert resp.contains("scattering"); // Adjust the expected response as needed
-                })
-                .verifyComplete();
-    }
+//    void asyncChat() {
+//        var response = service.asyncChat(OllamaModels.ORCA_MINI,
+//                "Why is the sky blue?");
+//
+//        StepVerifier.create(response)
+//                .consumeNextWith(resp -> {
+//                    System.out.println("Response: " + resp);
+//                    assert resp.contains("scattering"); // Adjust the expected response as needed
+//                })
+//                .verifyComplete();
+//    }
 }

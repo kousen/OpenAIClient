@@ -3,8 +3,6 @@ package com.kousenit.ollamaclient.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,16 +37,16 @@ public class OllamaService {
         return response.message().content();
     }
 
-    public Mono<String> asyncChat(String model, String question) {
-        var request = new OllamaChatRequest(model,
-                List.of(new Message("user", question)), true);
-        Flux<OllamaStreamingChatResponse> response = ollamaAsyncInterface.asyncChat(request);
-        return response
-                .map(OllamaStreamingChatResponse::message)
-                .map(Message::content)
-                .collectList()
-                .map(list -> String.join("", list));
-    }
+//    public Mono<String> asyncChat(String model, String question) {
+//        var request = new OllamaChatRequest(model,
+//                List.of(new Message("user", question)), true);
+//        Flux<OllamaStreamingChatResponse> response = ollamaAsyncInterface.asyncChat(request);
+//        return response
+//                .map(OllamaStreamingChatResponse::message)
+//                .map(Message::content)
+//                .collectList()
+//                .map(list -> String.join("", list));
+//    }
 
     public String chatWithDefaultModel(String question) {
         return chat(DEFAULT_MODEL, question);
